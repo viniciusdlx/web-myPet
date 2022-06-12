@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base{
+  body{
+      font-family: 'Outfit', sans-serif;
+      background-image: url(../src/assets/background-body.png);
+      height: 100vh;
+      max-height: 100%;
+      overflow: hidden;
+      /* font-family: 'Montserrat Alternates', sans-serif; */
+  }
+}
