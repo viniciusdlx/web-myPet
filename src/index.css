@@ -11,4 +11,7 @@
       overflow: hidden;
       /* font-family: 'Montserrat Alternates', sans-serif; */
   }
+  #backgroundHome{
+    background-image: url(../src/assets/background-home4.jpg);
+  }
 }

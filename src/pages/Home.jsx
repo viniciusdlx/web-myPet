@@ -15,9 +15,7 @@ function Home() {
       <div>
         <div
           className="h-screen md:bg-center bg-cover bg-no-repeat"
-          style={{
-            backgroundImage: 'url("../src/assets/background-home4.jpg")'
-          }}
+          id="backgroundHome"
         >
           <div className="h-full container mx-auto px-5 md:px-10">
             <div className="h-full flex flex-col justify-center items-center md:items-start text-white">
