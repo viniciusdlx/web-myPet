@@ -43,7 +43,8 @@ module.exports = {
       'mpGradientEnd' : 'rgba(142,28,201,1)',
       'mpGrey' : '#767676',
       'mpGreyLink' : '#747242',
-      'mpLightGrey' : '#D1D1D1'
+      'mpLightGrey' : '#D1D1D1',
+      'RosaClaro': "#FFB6C1"
     }
   },
   plugins: [
