@@ -8,10 +8,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^1.10.1",
     "@headlessui/react": "^1.6.4",
     "@heroicons/react": "^1.0.6",
     "flowbite": "^1.4.7",
-    "flowbite-react": "^0.0.25",
+    "flowbite-react": "^0.0.26",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "6",
