@@ -1,9 +1,25 @@
 import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import Background from '../components/Background'
+import { useAuth0 } from '@auth0/auth0-react'
+import LoginAuth0 from '../components/LoginAuth0'
+import LogoutAuth0 from '../components/LogoutAuth0'
 import Navbar from '../components/Navbar'
+import GetTokenAPI from '../components/GetTokenAPI'
+import GetTokenWEB from '../components/GetTokenWEB'
+// import GetUserMetadata from '../components/GetUserMetadata'
+
+const AuthNav = () => {
+  const { isAuthenticated } = useAuth0()
+  return (
+    <div className="my-16 ease-in-out duration-200 hover:scale-110">
+      {isAuthenticated ? <LogoutAuth0 /> : <LoginAuth0 />}
+    </div>
+  )
+}
 
 function Home() {
+  const { isAuthenticated } = useAuth0()
   const bgGradient =
     'bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd'
 
@@ -22,18 +38,9 @@ function Home() {
               <h1 className="text-center md:text-left text-4xl mbl:text-[42px] md:text-6xl tracking-wide md:tracking-wider font-semibold md:w-3/4 lg:w-3/5 xl:w-1/2 drop-shadow-2xl">
                 Sua carteira de vacinação digital
               </h1>
-              <NavLink
-                to="/login"
-                className="my-16 ease-in-out duration-200 hover:scale-110"
-              >
-                <span
-                  className={`px-10 md:px-14 py-2 text-3xl md:text-4xl font-semibold rounded-full tracking-widest ${bgGradient} `}
-                >
-                  Login
-                </span>
-              </NavLink>
+              <AuthNav />
               <p className="text-2xl">
-                Não é cadastrado?
+                Não é um Tutor cadastrado?
                 <br className="lg:hidden" />
                 <NavLink
                   to="/cadastro"

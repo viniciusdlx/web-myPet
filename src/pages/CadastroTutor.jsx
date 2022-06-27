@@ -1,84 +1,117 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Background from '../components/Background'
 import Navbar from '../components/Navbar'
+import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react'
+import Loading from '../components/Loading'
 
-// function sendFormUser(e) {
-//   e.preventDefault()
-//   const formUser = document.getElementById('formUser')
-//   const username = document.getElementById('username').value
-//   const password = document.getElementById('password').value
-//   const email = document.getElementById('email').value
-//   const birthdate = document.getElementById('birthdate').value
-//   const gender = document.getElementById('gender').value
-//   const data = {
-//     username: username,
-//     password: password,
-//     email: email,
-//     birthdate: birthdate,
-//     gender: gender
-//   }
-//   console.log(data)
-//   formUser.reset()
-// }
+var tokenAPI = localStorage.getItem('tokenAPI')
+var tokenWEB = localStorage.getItem('tokenWEB')
 
-function submitFormTutor() {
-  const formTutor = document.getElementById('formTutor')
-  formTutor.addEventListener('submit', function (e) {
-    e.preventDefault()
-
-    const formData = new FormData(this)
-    const searchParams = new URLSearchParams()
-
-    for (const pair of formData) {
-      searchParams.append(pair[0], pair[1])
-    }
-
-    formTutor.reset()
-  })
+const initialValue = {
+  name: '',
+  phone: '',
+  email: '',
+  birthday: '',
+  gender: ''
 }
 
-function CadastroUser() {
-  //   e.preventDefault()
+const CadastroTutor = () => {
+  const { user } = useAuth0()
+  // console.log(user)
 
-  //   const formTutor = new FormData(this)
-  //   const searchParams = new URLSearchParams()
+  const submitTutor = e => {
+    e.preventDefault()
 
-  //   for (const pair of formTutor) {
-  //     console.log(pair)
-  //   }
+    const data = values
+    // console.log(data)
+    // console.log(token)
 
-  //   options = {
-  //     method: 'POST',
-  //     body: formTutor
-  //   }
+    var myHeaders = new Headers()
+    myHeaders.append('Authorization', 'Bearer ' + tokenAPI)
+    myHeaders.append('Content-Type', 'application/json')
 
-  //   fetch('https://', {
-  //     method: 'POST',
-  //     body: formData
-  //   })
-  //     .then(response => {
-  //       return response.text()
-  //     })
-  //     .then(data => {
-  //       alert('Produto Cadastrado com Sucesso')
-  //       console.log(data)
-  //     })
+    var raw = JSON.stringify(data)
 
-  //   formCadastrarProduto.reset()
+    var requestOptions = {
+      method: 'PUT',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    }
+
+    fetch('https://my-petweb.herokuapp.com/tutor', requestOptions)
+      .then(response => response.json())
+      .then(result => {
+        console.log(result)
+        const tutorId = result.id
+        const domain = import.meta.env.VITE_AUTH0_DOMAIN
+        const data = {
+          user_metadata: {
+            id: tutorId
+          }
+        }
+        console.log(data)
+        const optionsPatchMetaData = {
+          method: 'PATCH',
+          headers: {
+            Authorization: 'Bearer ' + tokenWEB,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        }
+        fetch(
+          `https://${domain}/api/v2/users/${user.sub}`,
+          optionsPatchMetaData
+        )
+          .then(response => response.json())
+          .then(result => console.log(result))
+      })
+      .catch(error => console.log('error', error))
+
+    // let myHeaders = new Headers()
+    // myHeaders.append('Authorization', `Bearer ${token}`)
+    // myHeaders.append('Content-Type', 'application/json')
+
+    // var raw = JSON.stringify({
+    //   name: 'Test',
+    //   birthday: '2022-06-26',
+    //   gender: 'string',
+    //   phone: 'string',
+    //   email: 'string'
+    // })
+
+    // let requestOptionsPutTutor = {
+    //   method: 'PUT',
+    //   headers: myHeaders,
+    //   body: raw,
+    //   redirect: 'follow'
+    // }
+
+    // fetch('https://my-petweb.herokuapp.com/tutor', requestOptionsPutTutor)
+    //   .then(response => response.text())
+    //   .then(result => console.log(result))
+    //   .catch(error => console.log('error', error))
+
+    e.target.reset()
+  }
+
+  const [values, setValues] = useState(initialValue)
+  function onChange(event) {
+    const { name, value } = event.target
+    setValues({ ...values, [name]: value })
+  }
+
+  // document.getElementById('phone').addEventListener('input', function (e) {
+  //   var x = e.target.value
+  //     .replace(/\D/g, '')
+  //     .match(/(\d{0,3})(\d{0,3})(\d{0,4})/)
+  //   e.target.value = !x[2]
+  //     ? x[1]
+  //     : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '')
   // })
-
-  document.getElementById('phone').addEventListener('input', function (e) {
-    var x = e.target.value
-      .replace(/\D/g, '')
-      .match(/(\d{0,3})(\d{0,3})(\d{0,4})/)
-    e.target.value = !x[2]
-      ? x[1]
-      : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '')
-  })
 
   const bgGradient =
     'bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd'
-
   return (
     <>
       <header>
@@ -92,14 +125,16 @@ function CadastroUser() {
             </h1>
             <div className="h-full border-2 border-white bg-white rounded-2xl shadow-xl mt-6 lg:mt-10">
               <form
+                onSubmit={submitTutor}
                 id="formTutor"
                 autoComplete="off"
                 className="flex flex-col justify-center items-center h-full p-4 gap-y-4 text-black"
               >
                 <input
                   type="text"
-                  id="username"
-                  name="username"
+                  id="name"
+                  name="name"
+                  onChange={onChange}
                   autoComplete="name"
                   className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black"
                   placeholder="Digite seu nome"
@@ -109,6 +144,7 @@ function CadastroUser() {
                   type="tel"
                   id="phone"
                   name="phone"
+                  onChange={onChange}
                   autoComplete="phone"
                   className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black"
                   placeholder="Digite seu telefone"
@@ -118,6 +154,7 @@ function CadastroUser() {
                   type="email"
                   id="email"
                   name="email"
+                  onChange={onChange}
                   autoComplete="email"
                   className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black"
                   placeholder="Digite seu email"
@@ -125,28 +162,28 @@ function CadastroUser() {
                 />
                 <input
                   type="date"
-                  id="birthdate"
-                  name="birthdate"
-                  autoComplete="birthdate"
+                  id="birthday"
+                  name="birthday"
+                  onChange={onChange}
+                  autoComplete="birthday"
                   className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic"
                   required
                 />
                 <select
-                  name="gender"
                   id="gender"
+                  name="gender"
+                  onChange={onChange}
                   autoComplete="gender"
                   className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic"
                   required
                 >
                   <option value="">Selecione o gênero</option>
-                  <option value="masculino">Masculino</option>
-                  <option value="feminino">Feminino</option>
+                  <option value="Masculino">Masculino</option>
+                  <option value="Feminino">Feminino</option>
                   <option value="outro">Outro</option>
                 </select>
                 <button
                   type="submit"
-                  id="btnSendFormUser"
-                  onClick={submitFormTutor}
                   className={`${bgGradient} text-2xl text-white px-10 py-3 rounded-full font-semibold tracking-wider`}
                 >
                   Cadastrar
@@ -160,4 +197,6 @@ function CadastroUser() {
   )
 }
 
-export default CadastroUser
+export default withAuthenticationRequired(CadastroTutor, {
+  onRedirecting: () => <Loading />
+})
