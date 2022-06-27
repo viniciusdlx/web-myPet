@@ -5,12 +5,14 @@ const GetTokenWEB = () => {
   const { user, getAccessTokenSilently } = useAuth0()
   const getToken = async () => {
     try {
+      console.log('user', user);
       const acessToken = await getAccessTokenSilently({
         audience: 'https://my-pet.us.auth0.com/api/v2/',
         scope: 'read:current_user'
       })
       localStorage.removeItem('tokenWEB')
       localStorage.setItem('tokenWEB', acessToken)
+      console.log('setado TokenWEB')
 
       let myHeaders = new Headers()
       myHeaders.append('Authorization', 'Bearer ' + acessToken)
@@ -32,12 +34,11 @@ const GetTokenWEB = () => {
           localStorage.setItem('tutorID', tutorId)
         })
     } catch (e) {
-      console.log(e.message)
+      console.error('Error ->', e.message)
     }
   }
 
   getToken()
-  console.log('setado TokenWEB')
   console.log('setado TutorId')
 }
 export default GetTokenWEB

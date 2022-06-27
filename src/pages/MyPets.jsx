@@ -32,7 +32,7 @@ const FormCadastrarNovoPet = () => {
       ...data,
       tutorId
     }
-
+    console.log('data', data);
     const optionsPutPet = {
       method: 'PUT',
       headers: {
@@ -211,6 +211,8 @@ const NewPet = () => {
 
 function MyPets() {
   const { user, isAuthenticated } = useAuth0()
+  const [ petsList, setPetsList ] = useState([]);
+
   const DivGetPets = () => {
     const optionsGetPets = {
       method: 'GET',
@@ -231,47 +233,18 @@ function MyPets() {
         }
       })
   }
-  const petsList = [
-    {
-      id: '1',
-      name: 'Gohan',
-      breed: '',
-      gender: 'Feminino',
-      birthday: '2022-06-23',
-      specie: 'Viralata'
-    },
-    {
-      id: '2',
-      name: 'Gohan',
-      breed: 'Canina',
-      gender: '',
-      birthday: '2022-06-23',
-      specie: 'Viralata'
-    },
-    {
-      id: '3',
-      name: 'Gohan',
-      breed: 'Canina',
-      gender: 'Feminino',
-      birthday: '2022-06-23',
-      specie: 'Viralata'
-    },
-    {
-      id: '4',
-      name: 'Gohan',
-      breed: 'Canina',
-      gender: 'Masculino',
-      birthday: '2022-06-23',
-      specie: 'Viralata'
-    }
-  ]
 
   const GetPets = () => {
-    // fetch('https://my-petweb.herokuapp.com/tutor', {
-    //   headers: { Authorization: `Bearer ${token.access_token}` }
-    // })
-    //   .then(response => response.json())
-    //   .then(result => console.log(result))
+    const body = {
+      tutorId
+    }
+
+    fetch('https://my-petweb.herokuapp.com/pets/', {
+      headers: { Authorization: 'Bearer ' + tokenAPI },
+      body: JSON.stringify(body),
+    })
+      .then(response => response.json())
+      .then(result => setPetsList(result?.content))
   }
 
   const [disable, setDisable] = useState(false)
@@ -302,7 +275,7 @@ function MyPets() {
 
             <div>
               <div className="accordion py-10" id="accordionExample">
-                {petsList.map(pet => (
+                {petsList?.length > 0 ? petsList.map(pet => (
                   <div className="accordion-item bg-white border border-gray-200">
                     <h2
                       className="accordion-header mb-0"
@@ -463,7 +436,10 @@ function MyPets() {
                       </div>
                     </div>
                   </div>
-                ))}
+                )) 
+                : <div className='bg-white border border-gray-200 text-black text-center py-4'>
+                    Nenhum pet cadastrado, cadastre um!
+                  </div>}
               </div>
             </div>
           </div>

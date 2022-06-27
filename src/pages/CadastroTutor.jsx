@@ -23,7 +23,7 @@ const CadastroTutor = () => {
     e.preventDefault()
 
     const data = values
-    // console.log(data)
+    console.log('data -> ',data)
     // console.log(token)
 
     var myHeaders = new Headers()
@@ -38,7 +38,6 @@ const CadastroTutor = () => {
       body: raw,
       redirect: 'follow'
     }
-
     fetch('https://my-petweb.herokuapp.com/tutor', requestOptions)
       .then(response => response.json())
       .then(result => {
