@@ -32,7 +32,7 @@ const FormCadastrarNovoPet = () => {
       ...data,
       tutorId
     }
-    console.log('data', data);
+    console.log('data', data)
     const optionsPutPet = {
       method: 'PUT',
       headers: {
@@ -211,37 +211,36 @@ const NewPet = () => {
 
 function MyPets() {
   const { user, isAuthenticated } = useAuth0()
-  const [ petsList, setPetsList ] = useState([]);
+  const [petsList, setPetsList] = useState([])
 
-  const DivGetPets = () => {
-    const optionsGetPets = {
+  // const DivGetPets = () => {
+  //   const optionsGetPets = {
+  //     method: 'GET',
+  //     headers: {
+  //       Authorization: 'Bearer ' + tokenAPI,
+  //       'Content-type': 'application/json'
+  //     }
+  //   }
+  //   fetch(
+  //     `${import.meta.env.VITE_AUTH0_AUDIENCE}tutor/${tutorId}`,
+  //     optionsGetPets
+  //   )
+  //     .then(response => response.json())
+  //     .then(result => {
+  //       function TestDiv() {
+  //         const listPet = result.pet
+  //         listPet.map(pet => <div>{pet}</div>)
+  //       }
+  //     })
+  // }
+
+  const GetPets = () => {
+    fetch(`https://my-petweb.herokuapp.com/pets/${tutorId}`, {
       method: 'GET',
       headers: {
         Authorization: 'Bearer ' + tokenAPI,
         'Content-type': 'application/json'
       }
-    }
-    fetch(
-      `${import.meta.env.VITE_AUTH0_AUDIENCE}tutor/${tutorId}`,
-      optionsGetPets
-    )
-      .then(response => response.json())
-      .then(result => {
-        function TestDiv() {
-          const listPet = result.pet
-          listPet.map(pet => <div>{pet}</div>)
-        }
-      })
-  }
-
-  const GetPets = () => {
-    const body = {
-      tutorId
-    }
-
-    fetch('https://my-petweb.herokuapp.com/pets/', {
-      headers: { Authorization: 'Bearer ' + tokenAPI },
-      body: JSON.stringify(body),
     })
       .then(response => response.json())
       .then(result => setPetsList(result?.content))
@@ -275,171 +274,176 @@ function MyPets() {
 
             <div>
               <div className="accordion py-10" id="accordionExample">
-                {petsList?.length > 0 ? petsList.map(pet => (
-                  <div className="accordion-item bg-white border border-gray-200">
-                    <h2
-                      className="accordion-header mb-0"
-                      id={`heading-${pet.id}`}
-                    >
-                      <button
-                        className="accordion-button relative flex items-center w-full py-4 px-5 text-gray-800 text-left text-2xl bg-white border-0 rounded-none transition focus:outline-none"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target={`#collapse${pet.id}`}
-                        aria-expanded="true"
-                        aria-controls={`collapse${pet.id}`}
+                {petsList?.length > 0 ? (
+                  petsList.map(pet => (
+                    <div className="accordion-item bg-white border border-gray-200">
+                      <h2
+                        className="accordion-header mb-0"
+                        id={`heading-${pet.id}`}
                       >
-                        {pet.name}
-                      </button>
-                    </h2>
-                    <div
-                      id={`collapse${pet.id}`}
-                      className="accordion-collapse collapse"
-                      aria-labelledby={`heading-${pet.id}`}
-                      data-bs-parent="#accordionExample"
-                    >
-                      <div className="accordion-body py-4 px-5 text-black">
-                        <div className="text-lg">
-                          <div className="text-black flex justify-end py-2">
-                            <button
-                              className="active:scale-105"
-                              onClick={enableInputs}
-                              type="button"
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-12 w-12"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth={2}
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                                />
-                              </svg>
-                            </button>
-                          </div>
-                          <form
-                            id="editDataPet"
-                            className="grid grid-flow-row gap-y-4"
-                          >
-                            <div className="grid grid-cols-2 gap-x-4">
-                              <input
-                                type="text"
-                                id="valueNamePet"
-                                name="valueNamePet"
-                                placeholder="Nome do Pet"
-                                value={pet.name}
-                                className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic  disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
-                                disabled={disable ? false : true}
-                              />
-                              <input
-                                type="text"
-                                id="valueBreedPet"
-                                name="valueBreedPet"
-                                placeholder="Raça do Pet"
-                                value={pet.breed}
-                                className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
-                                disabled={disable ? false : true}
-                              />
-                            </div>
-                            <div className="grid grid-cols-2 gap-x-4">
-                              <select
-                                name="valueGenderPet"
-                                id="valueGenderPet"
-                                className="form-select appearance-none block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:cursor-not-allowed"
-                                disabled={disable ? false : true}
-                              >
-                                <option selected defaultValue="test">
-                                  {pet.gender == ''
-                                    ? 'Selecione o gênero'
-                                    : pet.gender}
-                                </option>
-                                <option
-                                  value="masculino"
-                                  className={
-                                    pet.gender === 'Masculino'
-                                      ? 'hidden'
-                                      : 'flex'
-                                  }
-                                >
-                                  Masculino
-                                </option>
-                                <option
-                                  value="feminino"
-                                  className={
-                                    pet.gender === 'Feminino'
-                                      ? 'hidden'
-                                      : 'flex'
-                                  }
-                                >
-                                  Feminino
-                                </option>
-                              </select>
-                              <input
-                                type="date"
-                                id="valueBirthdayPet"
-                                name="valueBirthdayPet"
-                                value={pet.birthday !== '' ? pet.birthday : ''}
-                                className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
-                                disabled={disable ? false : true}
-                              />
-                            </div>
-                            <div className="flex justify-center items-center w-1/2 mx-auto">
-                              <input
-                                type="text"
-                                id="valueSpeciePet"
-                                name="valueSpeciePet"
-                                placeholder="Espécie do Pet"
-                                value={pet.specie}
-                                className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
-                                disabled={disable ? false : true}
-                              />
-                            </div>
-                            <div className="flex justify-center items-center w-1/2 mx-auto">
+                        <button
+                          className="accordion-button relative flex items-center w-full py-4 px-5 text-gray-800 text-left text-2xl bg-white border-0 rounded-none transition focus:outline-none"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target={`#collapse${pet.id}`}
+                          aria-expanded="true"
+                          aria-controls={`collapse${pet.id}`}
+                        >
+                          {pet.name}
+                        </button>
+                      </h2>
+                      <div
+                        id={`collapse${pet.id}`}
+                        className="accordion-collapse collapse"
+                        aria-labelledby={`heading-${pet.id}`}
+                        data-bs-parent="#accordionExample"
+                      >
+                        <div className="accordion-body py-4 px-5 text-black">
+                          <div className="text-lg">
+                            <div className="text-black flex justify-end py-2">
                               <button
-                                type="submit"
-                                className="hidden bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd text-xl mbm:text-2xl text-white px-10 py-3 rounded-full font-semibold tracking-wider"
+                                className="active:scale-105"
+                                onClick={enableInputs}
+                                type="button"
                               >
-                                Atualizar Dados do Pet
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-12 w-12"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  strokeWidth={2}
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                  />
+                                </svg>
                               </button>
                             </div>
-                          </form>
-                        </div>
-                        <div className="w-fit md:w-full mx-auto text-center flex flex-col-reverse md:flex-row  justify-between gap-y-3">
-                          <div>
-                            <button
-                              onClick={DeletePet}
-                              className="bg-red-800 xl:text-2xl text-white px-4 xl:px-10 py-2 xl:py-3 rounded-full font-semibold tracking-wider"
+                            <form
+                              id="editDataPet"
+                              className="grid grid-flow-row gap-y-4"
                             >
-                              Excluir
-                            </button>
+                              <div className="grid grid-cols-2 gap-x-4">
+                                <input
+                                  type="text"
+                                  id="valueNamePet"
+                                  name="valueNamePet"
+                                  placeholder="Nome do Pet"
+                                  value={pet.name}
+                                  className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic  disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
+                                  disabled={disable ? false : true}
+                                />
+                                <input
+                                  type="text"
+                                  id="valueBreedPet"
+                                  name="valueBreedPet"
+                                  placeholder="Raça do Pet"
+                                  value={pet.breed}
+                                  className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
+                                  disabled={disable ? false : true}
+                                />
+                              </div>
+                              <div className="grid grid-cols-2 gap-x-4">
+                                <select
+                                  name="valueGenderPet"
+                                  id="valueGenderPet"
+                                  className="form-select appearance-none block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:cursor-not-allowed"
+                                  disabled={disable ? false : true}
+                                >
+                                  <option selected defaultValue="test">
+                                    {pet.gender == ''
+                                      ? 'Selecione o gênero'
+                                      : pet.gender}
+                                  </option>
+                                  <option
+                                    value="masculino"
+                                    className={
+                                      pet.gender === 'Masculino'
+                                        ? 'hidden'
+                                        : 'flex'
+                                    }
+                                  >
+                                    Masculino
+                                  </option>
+                                  <option
+                                    value="feminino"
+                                    className={
+                                      pet.gender === 'Feminino'
+                                        ? 'hidden'
+                                        : 'flex'
+                                    }
+                                  >
+                                    Feminino
+                                  </option>
+                                </select>
+                                <input
+                                  type="date"
+                                  id="valueBirthdayPet"
+                                  name="valueBirthdayPet"
+                                  value={
+                                    pet.birthday !== '' ? pet.birthday : ''
+                                  }
+                                  className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
+                                  disabled={disable ? false : true}
+                                />
+                              </div>
+                              <div className="flex justify-center items-center w-1/2 mx-auto">
+                                <input
+                                  type="text"
+                                  id="valueSpeciePet"
+                                  name="valueSpeciePet"
+                                  placeholder="Espécie do Pet"
+                                  value={pet.specie}
+                                  className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
+                                  disabled={disable ? false : true}
+                                />
+                              </div>
+                              <div className="flex justify-center items-center w-1/2 mx-auto">
+                                <button
+                                  type="submit"
+                                  className="hidden bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd text-xl mbm:text-2xl text-white px-10 py-3 rounded-full font-semibold tracking-wider"
+                                >
+                                  Atualizar Dados do Pet
+                                </button>
+                              </div>
+                            </form>
                           </div>
-                          <div className="flex flex-col-reverse md:flex-row md:gap-x-2 gap-y-3">
-                            <button
-                              onClick={AddMedications}
-                              className="bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd xl:text-2xl text-white px-4 xl:px-10 py-2 xl:py-3 rounded-full font-semibold tracking-wider"
-                            >
-                              Adicionar Medicamentos
-                            </button>
-                            <button
-                              onClick={AddVaccines}
-                              className="bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd xl:text-2xl text-white px-4 xl:px-10 py-2 xl:py-3 rounded-full font-semibold tracking-wider"
-                            >
-                              Adicionar Vacina
-                            </button>
+                          <div className="w-fit md:w-full mx-auto text-center flex flex-col-reverse md:flex-row  justify-between gap-y-3">
+                            <div>
+                              <button
+                                onClick={DeletePet}
+                                className="bg-red-800 xl:text-2xl text-white px-4 xl:px-10 py-2 xl:py-3 rounded-full font-semibold tracking-wider"
+                              >
+                                Excluir
+                              </button>
+                            </div>
+                            <div className="flex flex-col-reverse md:flex-row md:gap-x-2 gap-y-3">
+                              <button
+                                onClick={AddMedications}
+                                className="bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd xl:text-2xl text-white px-4 xl:px-10 py-2 xl:py-3 rounded-full font-semibold tracking-wider"
+                              >
+                                Adicionar Medicamentos
+                              </button>
+                              <button
+                                onClick={AddVaccines}
+                                className="bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd xl:text-2xl text-white px-4 xl:px-10 py-2 xl:py-3 rounded-full font-semibold tracking-wider"
+                              >
+                                Adicionar Vacina
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                )) 
-                : <div className='bg-white border border-gray-200 text-black text-center py-4'>
+                  ))
+                ) : (
+                  <div className="bg-white border border-gray-200 text-black text-center py-4">
                     Nenhum pet cadastrado, cadastre um!
-                  </div>}
+                  </div>
+                )}
               </div>
             </div>
           </div>
