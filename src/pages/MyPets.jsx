@@ -12,7 +12,7 @@ import SetValuesAuth0 from '../components/SetValuesAuth0'
 var tutorId = JSON.parse(localStorage.getItem('tutorID'))
 var tokenAPI = localStorage.getItem('tokenAPI')
 var tokenWEB = localStorage.getItem('tokenWEB')
-tutorId = tutorId.id
+tutorId = tutorId?.id
 
 const initialValue = {
   name: '',
