@@ -46,7 +46,7 @@ const FormCadastrarNovoPet = () => {
       .then(response => response.json())
       .then(result => console.log(result))
 
-    console.log(data)
+    // console.log(data)
 
     e.target.reset()
   }
@@ -235,30 +235,6 @@ function MyPets() {
     {
       id: '1',
       name: 'Gohan',
-      breed: '',
-      gender: 'Feminino',
-      birthday: '2022-06-23',
-      specie: 'Viralata'
-    },
-    {
-      id: '2',
-      name: 'Gohan',
-      breed: 'Canina',
-      gender: '',
-      birthday: '2022-06-23',
-      specie: 'Viralata'
-    },
-    {
-      id: '3',
-      name: 'Gohan',
-      breed: 'Canina',
-      gender: 'Feminino',
-      birthday: '2022-06-23',
-      specie: 'Viralata'
-    },
-    {
-      id: '4',
-      name: 'Gohan',
       breed: 'Canina',
       gender: 'Masculino',
       birthday: '2022-06-23',
@@ -289,10 +265,7 @@ function MyPets() {
           <div className="px-4 md:px-0 sm:w-3/4 lg:w-10/12 3xl:w-1/2 mx-auto">
             <div className="flex justify-between items-center">
               <h1 className="text-[30px] lg:text-5xl text-mpPurple2 font-bold">
-                Seus pets,{' '}
-                <NavLink to="/perfil" className="hover:underline">
-                  {user.name}
-                </NavLink>
+                Seus pets
                 <GetPets />
                 {/* <button onClick={GetPets}>hehe</button> */}
                 {/* {console.log(JSON.stringify(user, null, 2))} */}
@@ -354,79 +327,106 @@ function MyPets() {
                             className="grid grid-flow-row gap-y-4"
                           >
                             <div className="grid grid-cols-2 gap-x-4">
-                              <input
-                                type="text"
-                                id="valueNamePet"
-                                name="valueNamePet"
-                                placeholder="Nome do Pet"
-                                value={pet.name}
-                                className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic  disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
-                                disabled={disable ? false : true}
-                              />
-                              <input
-                                type="text"
-                                id="valueBreedPet"
-                                name="valueBreedPet"
-                                placeholder="Raça do Pet"
-                                value={pet.breed}
-                                className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
-                                disabled={disable ? false : true}
-                              />
+                              <label htmlFor="valueNamePet">
+                                <span className="text-sm md:text-base">
+                                  Nome:
+                                </span>
+                                <input
+                                  type="text"
+                                  id="valueNamePet"
+                                  name="valueNamePet"
+                                  placeholder="Nome do Pet"
+                                  value={pet.name}
+                                  className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic  disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
+                                  disabled={disable ? false : true}
+                                />
+                              </label>
+                              <label htmlFor="valueBreedPet">
+                                <span className="text-sm md:text-base">
+                                  Raça:{' '}
+                                </span>
+                                <input
+                                  type="text"
+                                  id="valueBreedPet"
+                                  name="valueBreedPet"
+                                  placeholder="Raça do Pet"
+                                  value={pet.breed}
+                                  className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
+                                  disabled={disable ? false : true}
+                                />
+                              </label>
                             </div>
                             <div className="grid grid-cols-2 gap-x-4">
-                              <select
-                                name="valueGenderPet"
-                                id="valueGenderPet"
-                                className="form-select appearance-none block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:cursor-not-allowed"
-                                disabled={disable ? false : true}
-                              >
-                                <option selected defaultValue="test">
-                                  {pet.gender == ''
-                                    ? 'Selecione o gênero'
-                                    : pet.gender}
-                                </option>
-                                <option
-                                  value="masculino"
-                                  className={
-                                    pet.gender === 'Masculino'
-                                      ? 'hidden'
-                                      : 'flex'
-                                  }
+                              <label htmlFor="valueGenderPet">
+                                <span className="text-sm md:text-base">
+                                  Gênero:{' '}
+                                </span>
+                                <select
+                                  name="valueGenderPet"
+                                  id="valueGenderPet"
+                                  className="form-select appearance-none block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:cursor-not-allowed"
+                                  disabled={disable ? false : true}
                                 >
-                                  Masculino
-                                </option>
-                                <option
-                                  value="feminino"
-                                  className={
-                                    pet.gender === 'Feminino'
-                                      ? 'hidden'
-                                      : 'flex'
+                                  <option selected defaultValue="test">
+                                    {pet.gender == ''
+                                      ? 'Selecione o gênero'
+                                      : pet.gender}
+                                  </option>
+                                  <option
+                                    value="masculino"
+                                    className={
+                                      pet.gender === 'Masculino'
+                                        ? 'hidden'
+                                        : 'flex'
+                                    }
+                                  >
+                                    Masculino
+                                  </option>
+                                  <option
+                                    value="feminino"
+                                    className={
+                                      pet.gender === 'Feminino'
+                                        ? 'hidden'
+                                        : 'flex'
+                                    }
+                                  >
+                                    Feminino
+                                  </option>
+                                </select>
+                              </label>
+                              <label htmlFor="valueBirthdayPet">
+                                <span className="text-sm md:text-base">
+                                  Nascimento:{' '}
+                                </span>
+                                <input
+                                  type="date"
+                                  id="valueBirthdayPet"
+                                  name="valueBirthdayPet"
+                                  value={
+                                    pet.birthday !== '' ? pet.birthday : ''
                                   }
-                                >
-                                  Feminino
-                                </option>
-                              </select>
-                              <input
-                                type="date"
-                                id="valueBirthdayPet"
-                                name="valueBirthdayPet"
-                                value={pet.birthday !== '' ? pet.birthday : ''}
-                                className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
-                                disabled={disable ? false : true}
-                              />
+                                  className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
+                                  disabled={disable ? false : true}
+                                />
+                              </label>
                             </div>
                             <div className="flex justify-center items-center w-1/2 mx-auto">
-                              <input
-                                type="text"
-                                id="valueSpeciePet"
-                                name="valueSpeciePet"
-                                placeholder="Espécie do Pet"
-                                value={pet.specie}
-                                className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
-                                disabled={disable ? false : true}
-                              />
+                              <label htmlFor="valueSpeciePet">
+                                <span className="text-sm md:text-base">
+                                  Espécie:{' '}
+                                </span>
+                                <input
+                                  type="text"
+                                  id="valueSpeciePet"
+                                  name="valueSpeciePet"
+                                  placeholder="Espécie do Pet"
+                                  value={pet.specie}
+                                  className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
+                                  disabled={disable ? false : true}
+                                />
+                              </label>
                             </div>
-                            <div className="flex justify-center items-center w-1/2 mx-auto">
+                            <div className="flex justify-center items-center w-1/2 mx-auto py-2">
                               <button
                                 type="submit"
                                 className="hidden bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd text-xl mbm:text-2xl text-white px-10 py-3 rounded-full font-semibold tracking-wider"

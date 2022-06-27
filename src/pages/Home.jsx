@@ -35,11 +35,11 @@ function Home() {
         >
           <div className="h-full container mx-auto px-5 md:px-10">
             <div className="h-full flex flex-col justify-center items-center md:items-start text-white">
-              <h1 className="text-center md:text-left text-4xl mbl:text-[42px] md:text-6xl tracking-wide md:tracking-wider font-semibold md:w-3/4 lg:w-3/5 xl:w-1/2 drop-shadow-2xl">
+              <h1 className="text-center md:text-left text-4xl mbl:text-[42px] md:text-6xl tracking-wide md:tracking-wider font-semibold md:w-3/4 lg:w-3/5 xl:w-1/2 drop-shadow-2xl ">
                 Sua carteira de vacinação digital
               </h1>
               <AuthNav />
-              <p className="text-2xl">
+              <p className="text-2xl text-black font-bold">
                 Não é um Tutor cadastrado?
                 <br className="lg:hidden" />
                 <NavLink
