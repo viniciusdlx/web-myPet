@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import { withAuthenticationRequired, useAuth0 } from '@auth0/auth0-react'
 import { AddMedications } from '../components/AddMedications'
-import { AddVaccines } from '../components/AddVaccines'
 import { DeletePet } from '../components/DeletePet'
 import Loading from '../components/Loading'
 import { NavLink } from 'react-router-dom'
@@ -22,6 +21,132 @@ const initialValue = {
   birthday: '',
   specie: '',
   tutorId: tutorId
+}
+
+const AddVaccines = () => {
+  const submitAddVaccine = e => {
+    e.preventDefault()
+
+    const data = {
+      petId: '',
+      vaccineId: '',
+      applicationDate: '',
+      nexDate: '',
+      description: ''
+    }
+
+    fetch(`https://my-petweb.herokuapp.com/pet-vaccine`, {
+      method: 'PUT',
+      headers: {
+        Authorization: 'Bearer ' + tokenAPI,
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => response.json())
+      .then(result => console.log(result))
+  }
+
+  fetch(`https://my-petweb.herokuapp.com/vaccines`, {
+    method: 'GET',
+    headers: {
+      Authorization: 'Bearer ' + tokenAPI,
+      'Content-type': 'application/json'
+    }
+  })
+    .then(response => response.json())
+    .then(result => console.log(result))
+
+  return (
+    <div
+      class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+      id="modalAddVaccines"
+      tabindex="-1"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-modal="true"
+      role="dialog"
+    >
+      <div class="modal-dialog modal-dialog-centered relative w-auto pointer-events-none">
+        <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
+          <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 rounded-t-md">
+            <button
+              type="button"
+              class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body relative p-4">
+            <form
+              id="formNewPet"
+              onSubmit={submitAddVaccine}
+              autoComplete="off"
+              className="flex flex-col justify-center items-center h-full p-4 gap-y-4 text-black"
+            >
+              <div className="form-floating mb-3 w-full xl:w-96">
+                <select
+                  id="gender"
+                  name="gender"
+                  className="form-select appearance-none block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black"
+                  required
+                >
+                  <option selected>Selecione o gênero do pet</option>
+                  <option value="Masculino">Masculino</option>
+                  <option value="Feminino">Feminino</option>
+                </select>
+              </div>
+              <div className="form-floating mb-3 w-full xl:w-96">
+                <input
+                  type="date"
+                  id="applicationDate"
+                  name="applicationDate"
+                  className="form-control block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black"
+                  placeholder="Nome do seu Pet"
+                  required
+                />
+                <label htmlFor="applicationDate" className="text-gray-700">
+                  Data de Aplicação
+                </label>
+              </div>
+
+              <div className="form-floating mb-3 w-full xl:w-96">
+                <input
+                  type="date"
+                  id="nextDate"
+                  name="nextDate"
+                  className="form-control h-[58px] max-h-[58px] block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black"
+                  placeholder="Data de Nascimento"
+                  required
+                />
+                <label htmlFor="nextDate" className="text-gray-700">
+                  Próxima data de Aplicação
+                </label>
+              </div>
+              <div className="form-floating mb-3 w-full xl:w-96">
+                <input
+                  type="text"
+                  id="description"
+                  name="description"
+                  className="form-control block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black"
+                  placeholder="Espécie"
+                  required
+                />
+                <label htmlFor="description" className="text-gray-700">
+                  Descrição
+                </label>
+              </div>
+              <button
+                type="submit"
+                className="bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd text-xl mbm:text-2xl text-white px-10 py-3 rounded-full font-semibold tracking-wider"
+              >
+                Adicionar Vacina
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 const FormCadastrarNovoPet = () => {
@@ -214,29 +339,8 @@ function MyPets() {
   const { user, isAuthenticated } = useAuth0()
   const [petsList, setPetsList] = useState([])
 
-  // const DivGetPets = () => {
-  //   const optionsGetPets = {
-  //     method: 'GET',
-  //     headers: {
-  //       Authorization: 'Bearer ' + tokenAPI,
-  //       'Content-type': 'application/json'
-  //     }
-  //   }
-  //   fetch(
-  //     `${import.meta.env.VITE_AUTH0_AUDIENCE}tutor/${tutorId}`,
-  //     optionsGetPets
-  //   )
-  //     .then(response => response.json())
-  //     .then(result => {
-  //       function TestDiv() {
-  //         const listPet = result.pet
-  //         listPet.map(pet => <div>{pet}</div>)
-  //       }
-  //     })
-  // }
-
   useEffect(() => {
-    GetPets();
+    GetPets()
   }, [])
 
   const GetPets = () => {
@@ -249,8 +353,8 @@ function MyPets() {
     })
       .then(response => response.json())
       .then(result => setPetsList(result?.content))
-      .catch((error) => {
-        console.log('error', error);
+      .catch(error => {
+        console.log('error', error)
       })
   }
 
@@ -260,7 +364,7 @@ function MyPets() {
     showConfirmButton: false,
     timer: 3000,
     timerProgressBar: true,
-    didOpen: (toast) => {
+    didOpen: toast => {
       toast.addEventListener('mouseenter', Swal.stopTimer)
       toast.addEventListener('mouseleave', Swal.resumeTimer)
     }
@@ -272,16 +376,22 @@ function MyPets() {
   }
 
   async function handleSubmit(e, pet, i) {
-    e.preventDefault();
-    console.log('document.getElementById("valueNamePet_"+i)', document.getElementById("valueNamePet_"+i));
+    e.preventDefault()
+    console.log(
+      'document.getElementById("valueNamePet_"+i)',
+      document.getElementById('valueNamePet_' + i)
+    )
     const body = {
-      name: document.getElementById("valueNamePet_"+i).value || pet.name,
-      breed: document.getElementById("valueBreedPet_"+i).value || pet.breed,
-      gender: document.getElementById("valueGenderPet_"+i).value || pet.gender,
-      birthday: document.getElementById("valueBirthdayPet_"+i).value || pet.birthday,
-      specie: document.getElementById("valueSpeciePet_"+i).value || pet.specie,
+      name: document.getElementById('valueNamePet_' + i).value || pet.name,
+      breed: document.getElementById('valueBreedPet_' + i).value || pet.breed,
+      gender:
+        document.getElementById('valueGenderPet_' + i).value || pet.gender,
+      birthday:
+        document.getElementById('valueBirthdayPet_' + i).value || pet.birthday,
+      specie:
+        document.getElementById('valueSpeciePet_' + i).value || pet.specie,
       tutorId
-    };
+    }
 
     const optionsPutPet = {
       method: 'PATCH',
@@ -291,8 +401,11 @@ function MyPets() {
       },
       body: JSON.stringify(body)
     }
-    console.log('body', body, pet.id);
-    await fetch(`${import.meta.env.VITE_AUTH0_AUDIENCE}pets/${pet.id}`, optionsPutPet)
+    console.log('body', body, pet.id)
+    await fetch(
+      `${import.meta.env.VITE_AUTH0_AUDIENCE}pets/${pet.id}`,
+      optionsPutPet
+    )
       .then(response => response.json())
       .then(() => {
         console.log('sucesso')
@@ -307,12 +420,13 @@ function MyPets() {
           title: 'Falha ao alterar pet'
         })
       })
-      console.log('depois do sucesso')
-    GetPets();
+    console.log('depois do sucesso')
+    GetPets()
   }
 
   return (
     <>
+      <AddVaccines />
       <header>
         <Navbar />
       </header>
@@ -382,13 +496,13 @@ function MyPets() {
                             <form
                               id="editDataPet"
                               className="grid grid-flow-row gap-y-4"
-                              onSubmit={(e) => handleSubmit(e, pet, i)}
+                              onSubmit={e => handleSubmit(e, pet, i)}
                               action="post"
                             >
                               <div className="grid grid-cols-2 gap-x-4">
                                 <input
                                   type="text"
-                                  id={"valueNamePet_"+i}
+                                  id={'valueNamePet_' + i}
                                   name="valueNamePet"
                                   placeholder={pet.name}
                                   className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
@@ -396,7 +510,7 @@ function MyPets() {
                                 />
                                 <input
                                   type="text"
-                                  id={"valueBreedPet_"+i}
+                                  id={'valueBreedPet_' + i}
                                   name="valueBreedPet"
                                   placeholder={pet.breed}
                                   className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
@@ -406,7 +520,7 @@ function MyPets() {
                               <div className="grid grid-cols-2 gap-x-4">
                                 <select
                                   name="valueGenderPet"
-                                  id={"valueGenderPet_"+i}
+                                  id={'valueGenderPet_' + i}
                                   className="form-select appearance-none block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:cursor-not-allowed"
                                   disabled={disable}
                                 >
@@ -439,9 +553,9 @@ function MyPets() {
                                 <input
                                   type="text"
                                   name="valueBirthdayPet"
-                                  id={"valueBirthdayPet_"+i}
-                                  onFocus={(e) => e.target.type='date'}
-                                  onBlur={(e) => e.target.type='text'}
+                                  id={'valueBirthdayPet_' + i}
+                                  onFocus={e => (e.target.type = 'date')}
+                                  onBlur={e => (e.target.type = 'text')}
                                   placeholder={
                                     pet.birthday !== '' ? pet.birthday : ''
                                   }
@@ -452,7 +566,7 @@ function MyPets() {
                               <div className="grid grid-cols-2 gap-x-4 mb-4">
                                 <input
                                   type="text"
-                                  id={"valueSpeciePet_"+i}
+                                  id={'valueSpeciePet_' + i}
                                   name="valueSpeciePet"
                                   placeholder={pet.specie}
                                   className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
@@ -460,7 +574,12 @@ function MyPets() {
                                 />
                                 <button
                                   type="submit"
-                                  className={disable ? "hidden " : " " + "ml-auto w-fit bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd text-xl mbm:text-2xl text-white px-10 py-3 rounded-full font-semibold tracking-wider mb-4"}
+                                  className={
+                                    disable
+                                      ? 'hidden '
+                                      : ' ' +
+                                        'ml-auto w-fit bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd text-xl mbm:text-2xl text-white px-10 py-3 rounded-full font-semibold tracking-wider mb-4'
+                                  }
                                 >
                                   Atualizar Dados do Pet
                                 </button>
@@ -470,7 +589,9 @@ function MyPets() {
                           <div className="w-fit md:w-full mx-auto text-center flex flex-col-reverse md:flex-row  justify-between gap-y-3">
                             <div>
                               <button
-                                onClick={() => DeletePet(pet.id, Toast, () => GetPets())}
+                                onClick={() =>
+                                  DeletePet(pet.id, Toast, () => GetPets())
+                                }
                                 className="bg-red-800 xl:text-2xl text-white px-4 xl:px-10 py-2 xl:py-3 rounded-full font-semibold tracking-wider"
                               >
                                 Excluir
@@ -484,8 +605,10 @@ function MyPets() {
                                 Adicionar Medicamentos
                               </button>
                               <button
-                                onClick={AddVaccines}
-                                className="bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd xl:text-2xl text-white px-4 xl:px-10 py-2 xl:py-3 rounded-full font-semibold tracking-wider"
+                                type="button"
+                                class="bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd xl:text-2xl text-white px-4 xl:px-10 py-2 xl:py-3 rounded-full font-semibold tracking-wider"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalAddVaccines"
                               >
                                 Adicionar Vacina
                               </button>
