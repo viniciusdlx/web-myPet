@@ -39,7 +39,7 @@ function Home() {
                 Sua carteira de vacinação digital
               </h1>
               <AuthNav />
-              <p className="text-2xl text-black font-bold">
+              <p className="text-2xl font-bold">
                 Não é um Tutor cadastrado?
                 <br className="lg:hidden" />
                 <NavLink
