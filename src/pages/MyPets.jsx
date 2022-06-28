@@ -331,9 +331,9 @@ function MyPets() {
       const data = {
         petId: selectedPet?.id,
         medicationId: document.getElementById('medicationId').value,
-        applicationDate: document.getElementById('applicationDate').value,
-        nextDate: document.getElementById('nextDate').value,
-        description: document.getElementById('description').value
+        applicationDate: document.getElementById('applicationDateMed').value,
+        nextDate: document.getElementById('nextDateMed').value,
+        description: document.getElementById('descriptionMed').value
       }
 
       fetch(`https://my-petweb.herokuapp.com/pet-medication`, {
@@ -344,16 +344,16 @@ function MyPets() {
         },
         body: JSON.stringify(data)
       })
-        .then(response => response.json())
         .then(result => {
+          document.getElementById('medicationId').value = ''
+          document.getElementById('applicationDateMed').value = ''
+          document.getElementById('nextDateMed').value = ''
+          document.getElementById('descriptionMed').value = ''
+
           Toast.fire({
             icon: 'success',
-            title: 'Vacina cadastrada com sucesso'
+            title: 'Medicamento cadastrado com sucesso'
           })
-          ;(document.getElementById('medicationId').value = ''),
-            (document.getElementById('applicationDate').value = ''),
-            (document.getElementById('nextDate').value = ''),
-            (document.getElementById('description').value = '')
         })
         .catch(err => {
           console.log(err)
@@ -433,13 +433,13 @@ function MyPets() {
                 <div className="form-floating mb-3 w-full xl:w-96">
                   <input
                     type="date"
-                    id="applicationDate"
-                    name="applicationDate"
+                    id="applicationDateMed"
+                    name="applicationDateMed"
                     className="form-control block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black"
                     placeholder="Nome do seu Pet"
                     required
                   />
-                  <label htmlFor="applicationDate" className="text-gray-700">
+                  <label htmlFor="applicationDateMed" className="text-gray-700">
                     Data de Aplicação
                   </label>
                 </div>
@@ -447,26 +447,26 @@ function MyPets() {
                 <div className="form-floating mb-3 w-full xl:w-96">
                   <input
                     type="date"
-                    id="nextDate"
-                    name="nextDate"
+                    id="nextDateMed"
+                    name="nextDateMed"
                     className="form-control h-[58px] max-h-[58px] block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black"
                     placeholder="Data de Nascimento"
                     required
                   />
-                  <label htmlFor="nextDate" className="text-gray-700">
+                  <label htmlFor="nextDateMed" className="text-gray-700">
                     Próxima data de Aplicação
                   </label>
                 </div>
                 <div className="form-floating mb-3 w-full xl:w-96">
                   <input
                     type="text"
-                    id="description"
-                    name="description"
+                    id="descriptionMed"
+                    name="descriptionMed"
                     className="form-control block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black"
                     placeholder="Espécie"
                     required
                   />
-                  <label htmlFor="description" className="text-gray-700">
+                  <label htmlFor="descriptionMed" className="text-gray-700">
                     Descrição
                   </label>
                 </div>
@@ -505,19 +505,19 @@ function MyPets() {
         },
         body: JSON.stringify(data)
       })
-        .then(response => response.json())
         .then(result => {
+          document.getElementById('vaccineId').value = ''
+          document.getElementById('applicationDate').value = ''
+          document.getElementById('nextDate').value = ''
+          document.getElementById('description').value = ''
+
           Toast.fire({
             icon: 'success',
             title: 'Vacina cadastrada com sucesso'
           })
-          ;(document.getElementById('vaccineId').value = ''),
-            (document.getElementById('applicationDat').value = ''),
-            (document.getElementById('nextDate').value = ''),
-            (document.getElementById('description').value = '')
         })
         .catch(err => {
-          console.log(err)
+          console.log('Error salvar vacina->', err)
           Toast.fire({
             icon: 'error',
             title: 'Vacina falhou ao cadastrar'
