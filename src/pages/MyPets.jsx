@@ -9,10 +9,19 @@ import { Navigate } from 'react-router-dom'
 // import { Container } from './styles';
 
 function MyPets() {
-  var tutorId = JSON.parse(localStorage.getItem('tutorID'))
+  const [ tutorId, setTutorId ] = useState(undefined)
+  var intervalo = setInterval(() => {
+    const tutorJson = JSON.parse(localStorage.getItem('tutorID'))
+
+    if (tutorJson.id) {
+      setTutorId(tutorJson.id);
+      clearInterval(intervalo)
+    }
+  }, 500);
   var tokenAPI = localStorage.getItem('tokenAPI')
   var tokenWEB = localStorage.getItem('tokenWEB')
-  tutorId = tutorId?.id
+
+  const [ selectedPet, setSelectedPet ] = useState({})
 
   const Toast = Swal.mixin({
     toast: true,
@@ -35,12 +44,6 @@ function MyPets() {
     tutorId: tutorId
   }
 
-  let selectedPet = {}
-
-  function setSelectedPet(value) {
-    selectedPet = value
-  }
-
   const ShowMoreInfos = props => {
     const [petVaccinesList, setPetVaccinesList] = useState([])
     const [loadVac, setLoadVac] = useState(false)
@@ -50,7 +53,8 @@ function MyPets() {
     }, [loadVac])
 
     const loadVaccines = () => {
-      fetch(`https://my-petweb.herokuapp.com/pet-vaccine/${props?.pet?.id}`, {
+      console.log('selectedPet', selectedPet);
+      fetch(`https://my-petweb.herokuapp.com/pet-vaccine/${selectedPet?.id}`, {
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + tokenAPI,
@@ -59,8 +63,7 @@ function MyPets() {
       })
         .then(response => response.json())
         .then(result => {
-          console.log(props.order)
-          console.log('wha >> ', props.pet.id, result.content)
+          console.log('wha >> ', result.content)
           setPetVaccinesList(result.content)
         })
         .catch(err => {
@@ -118,7 +121,9 @@ function MyPets() {
                   >
                     <div class="accordion-body py-4 px-5">
                       {petVaccinesList.map(petVaccine => {
-                        ;<div>vem perereca {petVaccine.description}</div>
+                        return (
+                          <div>{petVaccine.description}</div>
+                        )
                       })}
                     </div>
                   </div>
@@ -257,34 +262,34 @@ function MyPets() {
         nextDate: document.getElementById('nextDate').value,
         description: document.getElementById('description').value
       }
-      console.log('data', data)
-      // fetch(`https://my-petweb.herokuapp.com/pet-vaccine`, {
-      //   method: 'PUT',
-      //   headers: {
-      //     Authorization: 'Bearer ' + tokenAPI,
-      //     'Content-type': 'application/json'
-      //   },
-      //   body: JSON.stringify(data)
-      // })
-      //   .then(response => response.json())
-      //   .then(result => {
-      //     Toast.fire({
-      //       icon: 'success',
-      //       title: 'Vacina cadastrada com sucesso'
-      //     })
 
-      //     document.getElementById('vaccineId').value = '',
-      //     document.getElementById('applicationDat').value = '',
-      //     document.getElementById('nextDate').value = '',
-      //     document.getElementById('description').value = ''
-      //   })
-      //   .catch(err => {
-      //     console.log(err)
-      //     Toast.fire({
-      //       icon: 'error',
-      //       title: 'Vacina falhou ao cadastrar'
-      //     })
-      //   })
+      fetch(`https://my-petweb.herokuapp.com/pet-vaccine`, {
+        method: 'PUT',
+        headers: {
+          Authorization: 'Bearer ' + tokenAPI,
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(response => response.json())
+        .then(result => {
+          Toast.fire({
+            icon: 'success',
+            title: 'Vacina cadastrada com sucesso'
+          })
+
+          document.getElementById('vaccineId').value = '',
+          document.getElementById('applicationDat').value = '',
+          document.getElementById('nextDate').value = '',
+          document.getElementById('description').value = ''
+        })
+        .catch(err => {
+          console.log(err)
+          Toast.fire({
+            icon: 'error',
+            title: 'Vacina falhou ao cadastrar'
+          })
+        })
     }
 
     const [vaccineList, setVaccineList] = useState([])
@@ -604,8 +609,10 @@ function MyPets() {
   const [petsList, setPetsList] = useState([])
 
   useEffect(() => {
-    GetPets()
-  }, [])
+    if (tutorId) {
+      GetPets()
+    }
+  }, [tutorId])
 
   function GetPets() {
     fetch(`https://my-petweb.herokuapp.com/pets/${tutorId}`, {
