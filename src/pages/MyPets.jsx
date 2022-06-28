@@ -470,7 +470,7 @@ function MyPets() {
                           <div className="w-fit md:w-full mx-auto text-center flex flex-col-reverse md:flex-row  justify-between gap-y-3">
                             <div>
                               <button
-                                onClick={DeletePet}
+                                onClick={() => DeletePet(pet.id, Toast, () => GetPets())}
                                 className="bg-red-800 xl:text-2xl text-white px-4 xl:px-10 py-2 xl:py-3 rounded-full font-semibold tracking-wider"
                               >
                                 Excluir
