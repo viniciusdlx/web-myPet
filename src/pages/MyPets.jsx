@@ -1214,7 +1214,6 @@ function MyPets() {
                 >
                   <span className="underline">{user?.name}</span>
                 </NavLink>
-                {/* <GetPets /> */}
               </h1>
               <NewPet />
             </div>
