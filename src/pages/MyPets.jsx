@@ -7,6 +7,7 @@ import { DeletePet } from '../components/DeletePet'
 import Loading from '../components/Loading'
 import { NavLink } from 'react-router-dom'
 import SetValuesAuth0 from '../components/SetValuesAuth0'
+import Swal from 'sweetalert2'
 // import { Container } from './styles';
 
 var tutorId = JSON.parse(localStorage.getItem('tutorID'))
@@ -250,17 +251,58 @@ function MyPets() {
       .then(result => setPetsList(result?.content))
   }
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
+
   const [disable, setDisable] = useState(true)
   const enableInputs = () => {
     setDisable(!disable)
   }
 
-  function handleSubmit(e) {
+  function handleSubmit(e, pet) {
     e.preventDefault();
 
-    const nome = document.getElementById("valueNamePet").value;
+    const body = {
+      name: document.getElementById("valueNamePet").value || pet.name,
+      breed: document.getElementById("valueBreedPet").value || pet.breed,
+      gender: document.getElementById("valueGenderPet").value || pet.gender,
+      birthday: document.getElementById("valueBirthdayPet").value || pet.birthday,
+      specie: document.getElementById("valueSpeciePet").value || pet.specie,
+      tutorId
+    };
 
-    console.log('nome', nome);
+    const optionsPutPet = {
+      method: 'PATCH',
+      headers: {
+        Authorization: 'Bearer ' + tokenAPI,
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    }
+
+    fetch(`${import.meta.env.VITE_AUTH0_AUDIENCE}pets/${pet.id}`, optionsPutPet)
+      .then(response => response.json())
+      .then(() => {
+        Toast.fire({
+          icon: 'success',
+          title: 'Pet alterado com sucesso'
+        })
+      })
+      .catch(() => {
+        Toast.fire({
+          icon: 'error',
+          title: 'Falha ao alterar pet'
+        })
+      })
   }
 
   return (
@@ -334,7 +376,7 @@ function MyPets() {
                             <form
                               id="editDataPet"
                               className="grid grid-flow-row gap-y-4"
-                              onSubmit={handleSubmit}
+                              onSubmit={(e) => handleSubmit(e, pet)}
                               action="post"
                             >
                               <div className="grid grid-cols-2 gap-x-4">
@@ -389,9 +431,11 @@ function MyPets() {
                                   </option>
                                 </select>
                                 <input
-                                  type="date"
+                                  type="text"
                                   id="valueBirthdayPet"
                                   name="valueBirthdayPet"
+                                  onFocus={(e) => e.target.type='date'}
+                                  onBlur={(e) => e.target.type='text'}
                                   placeholder={
                                     pet.birthday !== '' ? pet.birthday : ''
                                   }
