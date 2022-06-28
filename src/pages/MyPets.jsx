@@ -34,7 +34,43 @@ const initialValue = {
   tutorId: tutorId
 }
 
-const ShowMoreInfos = () => {
+let selectedPet = {}
+
+function setSelectedPet(value) {
+  selectedPet = value
+}
+
+const ShowMoreInfos = (props) => {
+  const [petVaccinesList, setPetVaccinesList] = useState([]);
+  const [loadVac, setLoadVac] = useState(false);
+
+  useEffect(() => {
+    loadVaccines()
+  }, [loadVac])
+
+  const loadVaccines = () => {
+    fetch(`https://my-petweb.herokuapp.com/pet-vaccine/${props?.pet?.id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + tokenAPI,
+        'Content-type': 'application/json'
+      },
+    })
+      .then(response => response.json())
+      .then(result => {
+        console.log(props.order)
+        console.log('wha >> ',props.pet.id, result.content)
+        setPetVaccinesList(result.content)
+      })
+      .catch(err => {
+        console.log(err)
+        // Toast.fire({
+        //   icon: 'error',
+        //   title: 'Vacina falhou ao carregar'
+        // })
+      })
+  }
+
   return (
     <div
       class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
@@ -47,7 +83,7 @@ const ShowMoreInfos = () => {
       <div class="modal-dialog modal-dialog-centered relative w-auto pointer-events-none">
         <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
           <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 rounded-t-md">
-            <h1 class="ml-auto text-lg">Mais Informações sobre seu Pet</h1>
+            <h1 class="ml-auto text-lg text-black">Mais Informações sobre seu Pet</h1>
             <button
               type="button"
               class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
@@ -55,7 +91,7 @@ const ShowMoreInfos = () => {
               aria-label="Close"
             ></button>
           </div>
-          <div class="modal-body relative p-4">
+          <div class="modal-body relative p-4 text-black">
             <div class="accordion" id="accordionExample">
               <div class="accordion-item bg-white border border-gray-200">
                 <h2 class="accordion-header mb-0" id="headingOne">
@@ -66,6 +102,7 @@ const ShowMoreInfos = () => {
                     data-bs-target="#collapseOne"
                     aria-expanded="true"
                     aria-controls="collapseOne"
+                    onClick={() => setLoadVac(!loadVac)}
                   >
                     Vacinas
                   </button>
@@ -76,7 +113,11 @@ const ShowMoreInfos = () => {
                   aria-labelledby="headingOne"
                   data-bs-parent="#accordionExample"
                 >
-                  <div class="accordion-body py-4 px-5"></div>
+                  <div class="accordion-body py-4 px-5">
+                    {petVaccinesList.map((petVaccine) => {
+                      <div>vem perereca {petVaccine.description}</div>
+                    })}
+                  </div>
                 </div>
               </div>
               <div class="accordion-item bg-white border border-gray-200">
@@ -207,23 +248,40 @@ const AddVaccines = () => {
     e.preventDefault()
 
     const data = {
-      petId: '',
-      vaccineId: '',
-      applicationDate: '',
-      nexDate: '',
-      description: ''
+      petId: selectedPet?.id,
+      vaccineId: document.getElementById('vaccineId').value,
+      applicationDate: document.getElementById('applicationDate').value,
+      nextDate: document.getElementById('nextDate').value,
+      description: document.getElementById('description').value
     }
+    console.log('data', data);
+    // fetch(`https://my-petweb.herokuapp.com/pet-vaccine`, {
+    //   method: 'PUT',
+    //   headers: {
+    //     Authorization: 'Bearer ' + tokenAPI,
+    //     'Content-type': 'application/json'
+    //   },
+    //   body: JSON.stringify(data)
+    // })
+    //   .then(response => response.json())
+    //   .then(result => {
+    //     Toast.fire({
+    //       icon: 'success',
+    //       title: 'Vacina cadastrada com sucesso'
+    //     })
 
-    fetch(`https://my-petweb.herokuapp.com/pet-vaccine`, {
-      method: 'PUT',
-      headers: {
-        Authorization: 'Bearer ' + tokenAPI,
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-      .then(response => response.json())
-      .then(result => console.log(result))
+    //     document.getElementById('vaccineId').value = '',
+    //     document.getElementById('applicationDat').value = '',
+    //     document.getElementById('nextDate').value = '',
+    //     document.getElementById('description').value = ''
+    //   })
+    //   .catch(err => {
+    //     console.log(err)
+    //     Toast.fire({
+    //       icon: 'error',
+    //       title: 'Vacina falhou ao cadastrar'
+    //     })
+    //   })
   }
 
   const [vaccineList, setVaccineList] = useState([])
@@ -276,7 +334,7 @@ const AddVaccines = () => {
                   className="form-select appearance-none block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black"
                   required
                 >
-                  <option selected>Selecione o gênero do pet</option>
+                  <option value="" selected>Selecione a vacina</option>
                   {vaccineList?.length > 0 ? (
                     vaccineList.map(e => <option value={e.id}>{e.name}</option>)
                   ) : (
@@ -326,6 +384,7 @@ const AddVaccines = () => {
               </div>
               <button
                 type="submit"
+                data-bs-dismiss="modal"
                 className="bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd text-xl mbm:text-2xl text-white px-10 py-3 rounded-full font-semibold tracking-wider"
               >
                 Adicionar Vacina
@@ -613,8 +672,8 @@ function MyPets() {
 
   return (
     <>
-      <ShowMoreInfos />
-      <AddVaccines />
+      <ShowMoreInfos/>
+      <AddVaccines/>
       <header>
         <Navbar />
       </header>
@@ -650,6 +709,7 @@ function MyPets() {
                           data-bs-target={`#collapse${pet.id}`}
                           aria-expanded="true"
                           aria-controls={`collapse${pet.id}`}
+                          onClick={() => setSelectedPet(pet)}
                         >
                           {pet.name}
                         </button>
