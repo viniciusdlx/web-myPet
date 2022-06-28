@@ -35,13 +35,13 @@ function Home() {
         >
           <div className="h-full container mx-auto px-5 md:px-10">
             <div className="h-full flex flex-col justify-center items-center md:items-start text-white">
-              <h1 className="text-center md:text-left text-4xl mbl:text-[42px] md:text-6xl tracking-wide md:tracking-wider font-semibold md:w-3/4 lg:w-3/5 xl:w-1/2 drop-shadow-2xl ">
+              <h1 className="mt-32 lg:mt-0 text-center md:text-left text-4xl mbl:text-[42px] md:text-6xl text-black tracking-wide md:tracking-wider font-semibold md:w-3/4 lg:w-3/5 xl:w-1/2 drop-shadow-2xl ">
                 Sua carteira de vacinação digital
               </h1>
               <AuthNav />
-              <p className="text-2xl font-bold">
+              <p className="text-2xl font-bold text-center md:text-left text-black bg-white bg-opacity-20 rounded-lg bg-transparent p-6 lg:p-0">
                 Não é um Tutor cadastrado?
-                <br className="lg:hidden" />
+                <br />
                 <NavLink
                   to="/cadastro"
                   className="ease-in-out duration-200 hover:text-[26px]"

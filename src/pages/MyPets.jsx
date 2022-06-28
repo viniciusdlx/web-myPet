@@ -595,7 +595,7 @@ function MyPets() {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-16 w-16"
+            className="h-14 lg:h-16 w-14 lg:w-16"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -739,15 +739,13 @@ function MyPets() {
       <div className="flex md:flex-col items-center py-10">
         <div className="container mx-auto text-white">
           <div className="px-4 md:px-0 sm:w-3/4 lg:w-10/12 3xl:w-1/2 mx-auto">
-            <div className="flex justify-between items-center">
-              <h1 className="text-[30px] lg:text-5xl text-mpPurple2 font-bold">
+            <div className="flex justify-between items-center ">
+              <h1 className="text-lg mbm:text-2xl lg:text-[30px] lg:text-5xl flex-wrap  text-mpPurple2 font-bold">
                 Seus pets{' '}
                 <NavLink to="/perfil" className="hover:underline">
                   <span>{user?.name}</span>
                 </NavLink>
                 {/* <GetPets /> */}
-                {/* <button onClick={GetPets}>hehe</button> */}
-                {/* {console.log(JSON.stringify(user, null, 2))} */}
               </h1>
               <NewPet />
             </div>
@@ -779,7 +777,7 @@ function MyPets() {
                         aria-labelledby={`heading-${pet.id}`}
                         data-bs-parent="#accordionPetList"
                       >
-                        <div className="accordion-body py-4 px-5 text-black">
+                        <div className="accordion-body py-4 px-2 lg:px-5 text-black">
                           <div className="text-lg">
                             <div className="text-black flex justify-end py-2">
                               <button
@@ -894,7 +892,7 @@ function MyPets() {
                                   disabled={disable}
                                 />
                               </div>
-                              <div className="grid grid-cols-2 gap-x-4 mb-4">
+                              <div className="grid grid-cols-2 justify-items-center items-center gap-x-4 mb-4">
                                 <input
                                   type="text"
                                   id={'valueSpeciePet_' + i}
@@ -909,7 +907,7 @@ function MyPets() {
                                     disable
                                       ? 'hidden '
                                       : ' ' +
-                                        'ml-auto w-fit bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd text-xl mbm:text-2xl text-white px-10 py-3 rounded-full font-semibold tracking-wider mb-4'
+                                        'mx-auto lg:w-full h-full bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd text-sm md:text-xl lg:text-2xl text-white px-4 lg:px-10 lg:py-3 rounded-full font-semibold tracking-wider'
                                   }
                                 >
                                   Atualizar Dados do Pet
