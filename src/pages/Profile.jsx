@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import NavbarElements from '../components/Navbar'
 
-var tokenAPI = localStorage.getItem('tokenAPI')
-var tutorId = JSON.parse(localStorage.getItem('tutorID'))
-tutorId = tutorId?.id
-
-const SetNewValuesTutor = e => {
-  e.preventDefault()
-  alert('Atualizado com sucesso')
-}
-
 export default function Profile() {
+  var tokenAPI = localStorage.getItem('tokenAPI')
+  var tutorId = JSON.parse(localStorage.getItem('tutorID'))
+  tutorId = tutorId?.id
+
   const [tutorData, setTutorData] = useState([])
+
+  const SetNewValuesTutor = e => {
+    e.preventDefault()
+    alert('Atualizado com sucesso')
+  }
 
   useEffect(() => {
     GetProfileTutor()

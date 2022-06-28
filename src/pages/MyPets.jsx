@@ -75,7 +75,7 @@ function MyPets() {
         })
     }
 
-    const handleDeletePetVaccine = (petVaccine) => {
+    const handleDeletePetVaccine = petVaccine => {
       fetch(`https://my-petweb.herokuapp.com/pet-vaccine/${petVaccine?.id}`, {
         method: 'DELETE',
         headers: {
@@ -88,7 +88,7 @@ function MyPets() {
             icon: 'success',
             title: 'Vacina do pet excluida com sucesso'
           })
-          setLoadVac(!loadVac);
+          setLoadVac(!loadVac)
         })
         .catch(err => {
           console.log(err)
@@ -170,11 +170,16 @@ function MyPets() {
                                 </span>
                               </div>
                               <span>
-                                <button type="button" class="inline-block rounded-full bg-black text-white leading-normal uppercase shadow-md hover:bg-gray-700 hover:shadow-lg focus:bg-gray-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-800 active:shadow-lg transition duration-150 ease-in-out w-9 h-9" 
-                                  onClick={() => handleDeletePetVaccine(petVaccine)}>
+                                <button
+                                  type="button"
+                                  class="inline-block rounded-full bg-black text-white leading-normal uppercase shadow-md hover:bg-gray-700 hover:shadow-lg focus:bg-gray-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-800 active:shadow-lg transition duration-150 ease-in-out w-9 h-9"
+                                  onClick={() =>
+                                    handleDeletePetVaccine(petVaccine)
+                                  }
+                                >
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    className="h-6 w-6 inline-flex" 
+                                    className="h-6 w-6 inline-flex"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     stroke="currentColor"
@@ -322,7 +327,162 @@ function MyPets() {
   const AddMedications = () => {
     const submitAddMedications = e => {
       e.preventDefault()
+
+      const data = {
+        petId: selectedPet?.id,
+        medicationId: document.getElementById('medicationId').value,
+        applicationDate: document.getElementById('applicationDate').value,
+        nextDate: document.getElementById('nextDate').value,
+        description: document.getElementById('description').value
+      }
+
+      fetch(`https://my-petweb.herokuapp.com/pet-medication`, {
+        method: 'PUT',
+        headers: {
+          Authorization: 'Bearer ' + tokenAPI,
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(response => response.json())
+        .then(result => {
+          Toast.fire({
+            icon: 'success',
+            title: 'Vacina cadastrada com sucesso'
+          })
+          ;(document.getElementById('medicationId').value = ''),
+            (document.getElementById('applicationDate').value = ''),
+            (document.getElementById('nextDate').value = ''),
+            (document.getElementById('description').value = '')
+        })
+        .catch(err => {
+          console.log(err)
+          Toast.fire({
+            icon: 'error',
+            title: 'Medicamento falhou ao cadastrar'
+          })
+        })
     }
+
+    const [medicationList, setMedicationList] = useState([])
+    useEffect(() => {
+      getMedications()
+    }, [])
+
+    const getMedications = () => {
+      fetch(`https://my-petweb.herokuapp.com/medications`, {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + tokenAPI,
+          'Content-type': 'application/json'
+        }
+      })
+        .then(response => response.json())
+        .then(result => {
+          console.log('Medications ->>', result)
+          setMedicationList(result?.content)
+        })
+    }
+    return (
+      <div
+        class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+        id="modalAddMedications"
+        tabindex="-1"
+        aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="false"
+        role="dialog"
+      >
+        <div class="modal-dialog modal-dialog-centered relative w-auto pointer-events-none">
+          <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
+            <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 rounded-t-md">
+              <button
+                type="button"
+                class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body relative p-4">
+              <form
+                id="formNewPet"
+                onSubmit={submitAddMedications}
+                autoComplete="off"
+                className="flex flex-col justify-center items-center h-full p-4 gap-y-4 text-black"
+              >
+                <div className="form-floating mb-3 w-full xl:w-96">
+                  <select
+                    id="medicationId"
+                    name="medicationId"
+                    className="form-select appearance-none block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black"
+                    required
+                  >
+                    <option value="" selected>
+                      Selecione o medicamento
+                    </option>
+                    {medicationList?.length > 0 ? (
+                      medicationList.map(e => (
+                        <option value={e.id}>
+                          {e.name} ({e.typesMedications[0].name})
+                        </option>
+                      ))
+                    ) : (
+                      <option value="">Nenhum medicamento encontrado</option>
+                    )}
+                  </select>
+                </div>
+                <div className="form-floating mb-3 w-full xl:w-96">
+                  <input
+                    type="date"
+                    id="applicationDate"
+                    name="applicationDate"
+                    className="form-control block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black"
+                    placeholder="Nome do seu Pet"
+                    required
+                  />
+                  <label htmlFor="applicationDate" className="text-gray-700">
+                    Data de Aplicação
+                  </label>
+                </div>
+
+                <div className="form-floating mb-3 w-full xl:w-96">
+                  <input
+                    type="date"
+                    id="nextDate"
+                    name="nextDate"
+                    className="form-control h-[58px] max-h-[58px] block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black"
+                    placeholder="Data de Nascimento"
+                    required
+                  />
+                  <label htmlFor="nextDate" className="text-gray-700">
+                    Próxima data de Aplicação
+                  </label>
+                </div>
+                <div className="form-floating mb-3 w-full xl:w-96">
+                  <input
+                    type="text"
+                    id="description"
+                    name="description"
+                    className="form-control block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black"
+                    placeholder="Espécie"
+                    required
+                  />
+                  <label htmlFor="description" className="text-gray-700">
+                    Descrição
+                  </label>
+                </div>
+                <button
+                  type="submit"
+                  data-bs-dismiss="modal"
+                  className="bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd text-xl mbm:text-2xl text-white px-10 py-3 rounded-full font-semibold tracking-wider"
+                >
+                  Adicionar Medicamento
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   const AddVaccines = () => {
@@ -759,6 +919,7 @@ function MyPets() {
   return (
     <>
       <ShowMoreInfos />
+      <AddMedications />
       <AddVaccines />
       <header>
         <Navbar />
