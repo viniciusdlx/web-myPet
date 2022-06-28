@@ -151,52 +151,55 @@ function MyPets() {
           })
         })
     }
-    // const handleDeletePetVaccine = petVaccine => {
-    //   fetch(`https://my-petweb.herokuapp.com/pet-vaccine/${petVaccine?.id}`, {
-    //     method: 'DELETE',
-    //     headers: {
-    //       Authorization: 'Bearer ' + tokenAPI,
-    //       'Content-type': 'application/json'
-    //     }
-    //   })
-    //     .then(() => {
-    //       Toast.fire({
-    //         icon: 'success',
-    //         title: 'Vacina do pet excluida com sucesso'
-    //       })
-    //       setLoadAll(!loadAll)
-    //     })
-    //     .catch(err => {
-    //       console.log(err)
-    //       Toast.fire({
-    //         icon: 'error',
-    //         title: 'Erro ao deletar vacina do pet'
-    //       })
-    //     })
-    // }
-    // const handleDeletePetVaccine = petVaccine => {
-    //   fetch(`https://my-petweb.herokuapp.com/pet-vaccine/${petVaccine?.id}`, {
-    //     method: 'DELETE',
-    //     headers: {
-    //       Authorization: 'Bearer ' + tokenAPI,
-    //       'Content-type': 'application/json'
-    //     }
-    //   })
-    //     .then(() => {
-    //       Toast.fire({
-    //         icon: 'success',
-    //         title: 'Vacina do pet excluida com sucesso'
-    //       })
-    //       setLoadAll(!loadAll)
-    //     })
-    //     .catch(err => {
-    //       console.log(err)
-    //       Toast.fire({
-    //         icon: 'error',
-    //         title: 'Erro ao deletar vacina do pet'
-    //       })
-    //     })
-    // }
+    const handleDeletePetMedication = petMedication => {
+      fetch(
+        `https://my-petweb.herokuapp.com/pet-medication/${petMedication?.id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: 'Bearer ' + tokenAPI,
+            'Content-type': 'application/json'
+          }
+        }
+      )
+        .then(() => {
+          Toast.fire({
+            icon: 'success',
+            title: 'Medicamento do pet excluida com sucesso'
+          })
+          setLoadAll(!loadAll)
+        })
+        .catch(err => {
+          console.log(err)
+          Toast.fire({
+            icon: 'error',
+            title: 'Erro ao deletar medicamento do pet'
+          })
+        })
+    }
+    const handleDeletePetSurgerie = petSurgerie => {
+      fetch(`https://my-petweb.herokuapp.com/surgeries/${petSurgerie?.id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: 'Bearer ' + tokenAPI,
+          'Content-type': 'application/json'
+        }
+      })
+        .then(() => {
+          Toast.fire({
+            icon: 'success',
+            title: 'Cirurgia do pet excluida com sucesso'
+          })
+          setLoadAll(!loadAll)
+        })
+        .catch(err => {
+          console.log(err)
+          Toast.fire({
+            icon: 'error',
+            title: 'Erro ao deletar cirurgia do pet'
+          })
+        })
+    }
 
     return (
       <div
@@ -229,7 +232,7 @@ function MyPets() {
                       type="button"
                       data-bs-toggle="collapse"
                       data-bs-target="#collapseOne"
-                      aria-expanded="false"
+                      aria-expanded="true"
                       aria-controls="collapseOne"
                       onClick={() => setLoadAll(!loadAll)}
                     >
@@ -316,6 +319,7 @@ function MyPets() {
                       data-bs-target="#collapseTwo"
                       aria-expanded="false"
                       aria-controls="collapseTwo"
+                      onClick={() => setLoadAll(!loadAll)}
                     >
                       Medicamentos
                     </button>
@@ -357,7 +361,7 @@ function MyPets() {
                                   type="button"
                                   class="inline-block rounded-full bg-black text-white leading-normal uppercase shadow-md hover:bg-gray-700 hover:shadow-lg focus:bg-gray-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-800 active:shadow-lg transition duration-150 ease-in-out w-9 h-9"
                                   onClick={() =>
-                                    handleDeletePetVaccine(petMedication)
+                                    handleDeletePetMedication(petMedication)
                                   }
                                 >
                                   <svg
@@ -391,149 +395,87 @@ function MyPets() {
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="accordion-item bg-white border border-gray-200">
-                <h2 class="accordion-header mb-0" id="headingThree">
-                  <button
-                    class=" accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left bg-white border-0 rounded-none transition focus:outline-none
+                <div class="accordion-item bg-white border border-gray-200">
+                  <h2 class="accordion-header mb-0" id="headingThree">
+                    <button
+                      class=" accordion-button collapsed relative flex items-center w-full py-4 px-5 text-base text-gray-800 text-left bg-white border-0 rounded-none transition focus:outline-none
       "
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#collapseThree"
-                    aria-expanded="false"
-                    aria-controls="collapseThree"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseThree"
+                      aria-expanded="false"
+                      aria-controls="collapseThree"
+                      onClick={() => setLoadAll(!loadAll)}
+                    >
+                      Cirurgias
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseThree"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="headingThree"
+                    data-bs-parent="#accordionExample"
                   >
-                    Cirurgias
-                  </button>
-                </h2>
-                <div
-                  id="collapseThree"
-                  class="accordion-collapse collapse"
-                  aria-labelledby="headingThree"
-                  data-bs-parent="#accordionExample"
-                >
-                  <div class="accordion-body py-4 px-5">
-                    {petSurgeriesList.map(petSurgerie => {
-                      return (
-                        <details className="bg-white border open:bg-white open:ring-1 open:ring-black/5 dark:open:ring-white/10 open:shadow-lg p-4 mb-3 rounded-lg">
-                          <summary className="flex justify-between items-center flex-row text-sm leading-6 text-slate-900 dark:text-white font-semibold select-none">
-                            <div className="flex">
-                              <span className="mr-1">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  className="h-6 w-6"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                  strokeWidth={2}
+                    <div class="accordion-body py-4 px-5">
+                      {petSurgeriesList.map(petSurgerie => {
+                        return (
+                          <details className="bg-white border open:bg-white open:ring-1 open:ring-black/5 dark:open:ring-white/10 open:shadow-lg p-4 mb-3 rounded-lg">
+                            <summary className="flex justify-between items-center flex-row text-sm leading-6 text-slate-900 dark:text-white font-semibold select-none">
+                              <div className="flex">
+                                <span className="mr-1">
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-6 w-6"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    strokeWidth={2}
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                                    />
+                                  </svg>
+                                </span>
+                                <span>Cirurgia: {petSurgerie.name}</span>
+                              </div>
+                              <span>
+                                <button
+                                  type="button"
+                                  class="inline-block rounded-full bg-black text-white leading-normal uppercase shadow-md hover:bg-gray-700 hover:shadow-lg focus:bg-gray-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-800 active:shadow-lg transition duration-150 ease-in-out w-9 h-9"
+                                  onClick={() =>
+                                    handleDeletePetSurgerie(petSurgerie)
+                                  }
                                 >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                                  />
-                                </svg>
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-6 w-6 inline-flex"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    strokeWidth={2}
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                    />
+                                  </svg>
+                                </button>
                               </span>
-                              <span>Cirurgia: {petSurgerie.name}</span>
+                            </summary>
+                            <div className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
+                              <p>Data da Cirurgia: {petSurgerie.date}</p>
+                              <p>Veterinário: {petSurgerie.vet}</p>
                             </div>
-                            <span>
-                              <button
-                                type="button"
-                                class="inline-block rounded-full bg-black text-white leading-normal uppercase shadow-md hover:bg-gray-700 hover:shadow-lg focus:bg-gray-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-800 active:shadow-lg transition duration-150 ease-in-out w-9 h-9"
-                                onClick={() =>
-                                  handleDeletePetVaccine(petSurgerie)
-                                }
-                              >
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  className="h-6 w-6 inline-flex"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                  strokeWidth={2}
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                  />
-                                </svg>
-                              </button>
-                            </span>
-                          </summary>
-                          <div className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
-                            <p>Data da Cirurgia: {petSurgerie.date}</p>
-                            <p>Veterinário: {petSurgerie.vet}</p>
-                          </div>
-                        </details>
-                      )
-                    })}
+                          </details>
+                        )
+                      })}
+                    </div>
                   </div>
                 </div>
               </div>
-
-              {/* <form
-              id="formNewPet"
-              autoComplete="off"
-              className="flex flex-col justify-center items-center h-full p-4 gap-y-4 text-black"
-            >
-              <div className="form-floating mb-3 w-full xl:w-96">
-                <select
-                  id="vaccineId"
-                  name="vaccineId"
-                  className="form-select appearance-none block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black"
-                  required
-                >
-                  <option selected>Selecione o gênero do pet</option>
-                </select>
-              </div>
-              <div className="form-floating mb-3 w-full xl:w-96">
-                <input
-                  type="date"
-                  id="applicationDate"
-                  name="applicationDate"
-                  className="form-control block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black"
-                  placeholder="Nome do seu Pet"
-                  required
-                />
-                <label htmlFor="applicationDate" className="text-gray-700">
-                  Data de Aplicação
-                </label>
-              </div>
-
-              <div className="form-floating mb-3 w-full xl:w-96">
-                <input
-                  type="date"
-                  id="nextDate"
-                  name="nextDate"
-                  className="form-control h-[58px] max-h-[58px] block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black"
-                  placeholder="Data de Nascimento"
-                  required
-                />
-                <label htmlFor="nextDate" className="text-gray-700">
-                  Próxima data de Aplicação
-                </label>
-              </div>
-              <div className="form-floating mb-3 w-full xl:w-96">
-                <input
-                  type="text"
-                  id="description"
-                  name="description"
-                  className="form-control block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black"
-                  placeholder="Espécie"
-                  required
-                />
-                <label htmlFor="description" className="text-gray-700">
-                  Descrição
-                </label>
-              </div>
-              <button
-                type="submit"
-                className="bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd text-xl mbm:text-2xl text-white px-10 py-3 rounded-full font-semibold tracking-wider"
-              >
-                Adicionar Vacina
-              </button>
-            </form> */}
             </div>
           </div>
         </div>
