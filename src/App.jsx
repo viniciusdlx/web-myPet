@@ -9,7 +9,6 @@ const GetAllTokens = () => {
     <>
       <GetTokenAPI />
       <GetTokenWEB />
-      <AppRoutes />
     </>
   )
 }
@@ -19,6 +18,7 @@ function App() {
   return (
     <>
       <GetAllTokens />
+      <AppRoutes />
     </>
   )
 }

@@ -324,6 +324,124 @@ function MyPets() {
     )
   }
 
+  const AddSurgeries = () => {
+    const submitAddSurgeries = e => {
+      e.preventDefault()
+
+      const data = {
+        petId: selectedPet?.id,
+        name: document.getElementById('nameSurg').value,
+        date: document.getElementById('dateSurg').value,
+        vet: document.getElementById('vetSurg').value
+      }
+
+      fetch(`https://my-petweb.herokuapp.com/surgeries`, {
+        method: 'PUT',
+        headers: {
+          Authorization: 'Bearer ' + tokenAPI,
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(response => response.json())
+        .then(result => {
+          Toast.fire({
+            icon: 'success',
+            title: 'Cirurgia cadastrada com sucesso'
+          })
+          ;(document.getElementById('nameSurg').value = ''),
+            (document.getElementById('dateSurg').value = ''),
+            (document.getElementById('vetSurg').value = '')
+        })
+        .catch(err => {
+          console.log(err)
+          Toast.fire({
+            icon: 'error',
+            title: 'Cirurgia falhou ao cadastrar'
+          })
+        })
+    }
+
+    return (
+      <div
+        class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+        id="modalAddSurgeries"
+        tabindex="-1"
+        aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="false"
+        role="dialog"
+      >
+        <div class="modal-dialog modal-dialog-centered relative w-auto pointer-events-none">
+          <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
+            <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 rounded-t-md">
+              <button
+                type="button"
+                class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body relative p-4">
+              <form
+                id="formNewPet"
+                onSubmit={submitAddSurgeries}
+                autoComplete="off"
+                className="flex flex-col justify-center items-center h-full p-4 gap-y-4 text-black"
+              >
+                <div className="form-floating mb-3 w-full xl:w-96">
+                  <input
+                    type="text"
+                    id="nameSurg"
+                    name="nameSurg"
+                    className="form-control block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black"
+                    placeholder="Nome da Cirurgia"
+                    required
+                  />
+                  <label htmlFor="nameSurg" className="text-gray-700">
+                    Nome da Cirurgia:
+                  </label>
+                </div>
+                <div className="form-floating mb-3 w-full xl:w-96">
+                  <input
+                    type="date"
+                    id="dateSurg"
+                    name="dateSurg"
+                    className="form-control block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black"
+                    placeholder="Data da Cirurgia"
+                    required
+                  />
+                  <label htmlFor="dateSurg" className="text-gray-700">
+                    Data da Cirurgia:
+                  </label>
+                </div>
+                <div className="form-floating mb-3 w-full xl:w-96">
+                  <input
+                    type="text"
+                    id="vetSurg"
+                    name="vetSurg"
+                    className="form-control block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black"
+                    placeholder="Nome da Cirurgia"
+                    required
+                  />
+                  <label htmlFor="vetSurg" className="text-gray-700">
+                    Veterinário Responsável:
+                  </label>
+                </div>
+                <button
+                  type="submit"
+                  data-bs-dismiss="modal"
+                  className="bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd text-lg mbm:text-xl text-white px-6 py-3 rounded-full font-semibold tracking-wider"
+                >
+                  Adicionar Cirurgia
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   const AddMedications = () => {
     const submitAddMedications = e => {
       e.preventDefault()
@@ -473,7 +591,7 @@ function MyPets() {
                 <button
                   type="submit"
                   data-bs-dismiss="modal"
-                  className="bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd text-xl mbm:text-2xl text-white px-10 py-3 rounded-full font-semibold tracking-wider"
+                  className="bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd text-lg mbm:text-xl text-white px-6 py-3 rounded-full font-semibold tracking-wider"
                 >
                   Adicionar Medicamento
                 </button>
@@ -630,7 +748,7 @@ function MyPets() {
                 <button
                   type="submit"
                   data-bs-dismiss="modal"
-                  className="bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd text-xl mbm:text-2xl text-white px-10 py-3 rounded-full font-semibold tracking-wider"
+                  className="bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd text-lg mbm:text-xl text-white px-6 py-3 rounded-full font-semibold tracking-wider"
                 >
                   Adicionar Vacina
                 </button>
@@ -919,6 +1037,7 @@ function MyPets() {
   return (
     <>
       <ShowMoreInfos />
+      <AddSurgeries />
       <AddMedications />
       <AddVaccines />
       <header>
@@ -928,10 +1047,13 @@ function MyPets() {
         <div className="container mx-auto text-white">
           <div className="px-4 md:px-0 sm:w-3/4 lg:w-10/12 3xl:w-1/2 mx-auto">
             <div className="flex justify-between items-center ">
-              <h1 className="text-lg mbm:text-2xl lg:text-[30px] lg:text-5xl flex-wrap  text-mpPurple2 font-bold">
+              <h1 className="text-lg mbm:text-2xl lg:text-[30px] lg:text-5xl flex-wrap  text-mpPurple2 font-bold relative">
                 Seus pets{' '}
-                <NavLink to="/perfil" className="hover:underline">
-                  <span>{user?.name}</span>
+                <NavLink
+                  to="/perfil"
+                  className="lg:ml-2 lg:absolute ease-in-out duration-200 hover:translate-x-4 hover:text-mpGradientMiddle"
+                >
+                  <span className="underline">{user?.name}</span>
                 </NavLink>
                 {/* <GetPets /> */}
               </h1>
@@ -1103,29 +1225,41 @@ function MyPets() {
                               </div>
                             </form>
                           </div>
-                          <div className="w-fit md:w-full mx-auto text-center flex flex-col-reverse md:flex-row  justify-between gap-y-3">
-                            <div>
+                          <div className="grid grid-rows-4 lg:grid-rows-none lg:grid-cols-4 gap-y-4 gap-x-6 justify-items-center items-center lg:w-fit lg:mx-auto">
+                            <div className="order-last lg:order-first w-full h-full">
                               <button
                                 onClick={() =>
                                   DeletePet(pet.id, Toast, () => GetPets())
                                 }
-                                className="bg-red-800 xl:text-2xl text-white px-4 xl:px-10 py-2 xl:py-3 rounded-full font-semibold tracking-wider"
+                                className="bg-red-800 xl:text-2xl text-white px-4 xl:px-10 py-2 xl:py-3 rounded-full font-semibold tracking-wider w-full h-full"
                               >
                                 Excluir
                               </button>
                             </div>
-                            <div className="flex flex-col-reverse md:flex-row md:gap-x-2 gap-y-3">
+                            <div className="w-full h-full">
                               <button
                                 type="button"
-                                className="bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd xl:text-2xl text-white px-4 xl:px-10 py-2 xl:py-3 rounded-full font-semibold tracking-wider"
+                                className="bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd xl:text-2xl text-white px-4 xl:px-10 py-2 xl:py-3 rounded-full font-semibold tracking-wider w-full h-full"
                                 data-bs-toggle="modal"
                                 data-bs-target="#modalAddMedications"
                               >
                                 Adicionar Medicamentos
                               </button>
+                            </div>
+                            <div className="h-full w-full">
                               <button
                                 type="button"
-                                class="bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd xl:text-2xl text-white px-4 xl:px-10 py-2 xl:py-3 rounded-full font-semibold tracking-wider"
+                                className="bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd xl:text-2xl text-white px-4 xl:px-10 py-2 xl:py-3 rounded-full font-semibold tracking-wider h-full w-full"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalAddSurgeries"
+                              >
+                                Adicionar Cirurgias
+                              </button>
+                            </div>
+                            <div className="h-full w-full">
+                              <button
+                                type="button"
+                                class="bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd xl:text-2xl text-white px-4 xl:px-10 py-2 xl:py-3 rounded-full font-semibold tracking-wider h-full w-full"
                                 data-bs-toggle="modal"
                                 data-bs-target="#modalAddVaccines"
                               >
