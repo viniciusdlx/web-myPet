@@ -36,9 +36,9 @@ export default function Profile() {
       <header>
         <NavbarElements />
       </header>
-      <div className="container md:w-1/2 mx-auto">
-        <div className="text-center p-8">
-          <div className="text-xl md:text-3xl text-mpDarkPurple border-2 border-white bg-white rounded-2xl shadow-xl py-6 px-3">
+      <div className="container lg:w-1/2 mx-auto">
+        <div className="text-center p-3 mbl:p-8">
+          <div className="text-lg mbl:text-xl md:text-3xl text-mpDarkPurple border-2 border-white bg-white rounded-2xl shadow-xl py-6 px-1 mbl:px-3">
             Bem vindo {tutorData.name}! <br /> Esse é seu perfil de Tutor
           </div>
           <div className="h-full border-2 border-white bg-white rounded-2xl shadow-xl mt-6 lg:mt-10">

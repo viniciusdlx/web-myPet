@@ -9,19 +9,19 @@ import { Navigate } from 'react-router-dom'
 // import { Container } from './styles';
 
 function MyPets() {
-  const [ tutorId, setTutorId ] = useState(undefined)
+  const [tutorId, setTutorId] = useState(undefined)
   var intervalo = setInterval(() => {
     const tutorJson = JSON.parse(localStorage.getItem('tutorID'))
 
     if (tutorJson.id) {
-      setTutorId(tutorJson.id);
+      setTutorId(tutorJson.id)
       clearInterval(intervalo)
     }
-  }, 500);
+  }, 500)
   var tokenAPI = localStorage.getItem('tokenAPI')
   var tokenWEB = localStorage.getItem('tokenWEB')
 
-  const [ selectedPet, setSelectedPet ] = useState({})
+  const [selectedPet, setSelectedPet] = useState({})
 
   const Toast = Swal.mixin({
     toast: true,
@@ -53,7 +53,7 @@ function MyPets() {
     }, [loadVac])
 
     const loadVaccines = () => {
-      console.log('selectedPet', selectedPet);
+      console.log('selectedPet', selectedPet)
       fetch(`https://my-petweb.herokuapp.com/pet-vaccine/${selectedPet?.id}`, {
         method: 'GET',
         headers: {
@@ -119,10 +119,57 @@ function MyPets() {
                     aria-labelledby="headingOne"
                     data-bs-parent="#accordionExample"
                   >
-                    <div class="accordion-body py-4 px-5">
+                    <div className="accordion-body py-4 px-3">
                       {petVaccinesList.map(petVaccine => {
                         return (
-                          <div>{petVaccine.description}</div>
+                          <details className="bg-white border open:bg-white open:ring-1 open:ring-black/5 dark:open:ring-white/10 open:shadow-lg p-4 mb-3 rounded-lg">
+                            <summary className="flex justify-between items-center flex-row text-sm leading-6 text-slate-900 dark:text-white font-semibold select-none">
+                              <div className="flex">
+                                <span className="mr-1">
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-6 w-6"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    strokeWidth={2}
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                                    />
+                                  </svg>
+                                </span>
+                                <span>
+                                  Vacina Aplicada: {petVaccine.vaccine.name}
+                                </span>
+                              </div>
+                              <span>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-6 w-6 inline-flex"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  strokeWidth={2}
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                  />
+                                </svg>
+                              </span>
+                            </summary>
+                            <div className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
+                              <p>Descrição: {petVaccine.description}</p>
+                              <p>
+                                Data de Aplicação: {petVaccine.applicationDate}
+                              </p>
+                              <p>Próxima Data: {petVaccine.nextDate}</p>
+                            </div>
+                          </details>
                         )
                       })}
                     </div>
@@ -277,11 +324,10 @@ function MyPets() {
             icon: 'success',
             title: 'Vacina cadastrada com sucesso'
           })
-
-          document.getElementById('vaccineId').value = '',
-          document.getElementById('applicationDat').value = '',
-          document.getElementById('nextDate').value = '',
-          document.getElementById('description').value = ''
+          ;(document.getElementById('vaccineId').value = ''),
+            (document.getElementById('applicationDat').value = ''),
+            (document.getElementById('nextDate').value = ''),
+            (document.getElementById('description').value = '')
         })
         .catch(err => {
           console.log(err)
@@ -707,7 +753,7 @@ function MyPets() {
             </div>
 
             <div>
-              <div className="accordion py-10" id="accordionExample">
+              <div className="accordion py-10" id="accordionPetList">
                 {petsList?.length > 0 ? (
                   petsList.map((pet, i) => (
                     <div className="accordion-item bg-white border border-gray-200">
@@ -731,7 +777,7 @@ function MyPets() {
                         id={`collapse${pet.id}`}
                         className="accordion-collapse collapse"
                         aria-labelledby={`heading-${pet.id}`}
-                        data-bs-parent="#accordionExample"
+                        data-bs-parent="#accordionPetList"
                       >
                         <div className="accordion-body py-4 px-5 text-black">
                           <div className="text-lg">
