@@ -46,11 +46,15 @@ function MyPets() {
 
   const ShowMoreInfos = props => {
     const [petVaccinesList, setPetVaccinesList] = useState([])
-    const [loadVac, setLoadVac] = useState(false)
+    const [petMedicationsList, setPetMedicationsList] = useState([])
+    const [petSurgeriesList, setPetSurgeriesList] = useState([])
+    const [loadAll, setLoadAll] = useState(false)
 
     useEffect(() => {
       loadVaccines()
-    }, [loadVac])
+      loadMedications()
+      loadSurgeries()
+    }, [loadAll])
 
     const loadVaccines = () => {
       console.log('selectedPet', selectedPet)
@@ -75,6 +79,55 @@ function MyPets() {
         })
     }
 
+    const loadMedications = () => {
+      console.log('selectedPet Medications', selectedPet)
+      fetch(
+        `https://my-petweb.herokuapp.com/pet-medication/${selectedPet?.id}`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: 'Bearer ' + tokenAPI,
+            'Content-type': 'application/json'
+          }
+        }
+      )
+        .then(response => response.json())
+        .then(result => {
+          console.log('whm >> ', result.content)
+          setPetMedicationsList(result.content)
+        })
+        .catch(err => {
+          console.log(err)
+          // Toast.fire({
+          //   icon: 'error',
+          //   title: 'Vacina falhou ao carregar'
+          // })
+        })
+    }
+
+    const loadSurgeries = () => {
+      console.log('selectedPet', selectedPet)
+      fetch(`https://my-petweb.herokuapp.com/surgeries/${selectedPet?.id}`, {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + tokenAPI,
+          'Content-type': 'application/json'
+        }
+      })
+        .then(response => response.json())
+        .then(result => {
+          console.log('whs >> ', result.content)
+          setPetSurgeriesList(result.content)
+        })
+        .catch(err => {
+          console.log(err)
+          // Toast.fire({
+          //   icon: 'error',
+          //   title: 'Vacina falhou ao carregar'
+          // })
+        })
+    }
+
     const handleDeletePetVaccine = petVaccine => {
       fetch(`https://my-petweb.herokuapp.com/pet-vaccine/${petVaccine?.id}`, {
         method: 'DELETE',
@@ -88,7 +141,7 @@ function MyPets() {
             icon: 'success',
             title: 'Vacina do pet excluida com sucesso'
           })
-          setLoadVac(!loadVac)
+          setLoadAll(!loadAll)
         })
         .catch(err => {
           console.log(err)
@@ -98,6 +151,52 @@ function MyPets() {
           })
         })
     }
+    // const handleDeletePetVaccine = petVaccine => {
+    //   fetch(`https://my-petweb.herokuapp.com/pet-vaccine/${petVaccine?.id}`, {
+    //     method: 'DELETE',
+    //     headers: {
+    //       Authorization: 'Bearer ' + tokenAPI,
+    //       'Content-type': 'application/json'
+    //     }
+    //   })
+    //     .then(() => {
+    //       Toast.fire({
+    //         icon: 'success',
+    //         title: 'Vacina do pet excluida com sucesso'
+    //       })
+    //       setLoadAll(!loadAll)
+    //     })
+    //     .catch(err => {
+    //       console.log(err)
+    //       Toast.fire({
+    //         icon: 'error',
+    //         title: 'Erro ao deletar vacina do pet'
+    //       })
+    //     })
+    // }
+    // const handleDeletePetVaccine = petVaccine => {
+    //   fetch(`https://my-petweb.herokuapp.com/pet-vaccine/${petVaccine?.id}`, {
+    //     method: 'DELETE',
+    //     headers: {
+    //       Authorization: 'Bearer ' + tokenAPI,
+    //       'Content-type': 'application/json'
+    //     }
+    //   })
+    //     .then(() => {
+    //       Toast.fire({
+    //         icon: 'success',
+    //         title: 'Vacina do pet excluida com sucesso'
+    //       })
+    //       setLoadAll(!loadAll)
+    //     })
+    //     .catch(err => {
+    //       console.log(err)
+    //       Toast.fire({
+    //         icon: 'error',
+    //         title: 'Erro ao deletar vacina do pet'
+    //       })
+    //     })
+    // }
 
     return (
       <div
@@ -132,7 +231,7 @@ function MyPets() {
                       data-bs-target="#collapseOne"
                       aria-expanded="false"
                       aria-controls="collapseOne"
-                      onClick={() => setLoadVac(!loadVac)}
+                      onClick={() => setLoadAll(!loadAll)}
                     >
                       Vacinas
                     </button>
@@ -218,7 +317,7 @@ function MyPets() {
                       aria-expanded="false"
                       aria-controls="collapseTwo"
                     >
-                      Medications
+                      Medicamentos
                     </button>
                   </h2>
                   <div
@@ -227,7 +326,69 @@ function MyPets() {
                     aria-labelledby="headingTwo"
                     data-bs-parent="#accordionExample"
                   >
-                    <div class="accordion-body py-4 px-5"></div>
+                    <div class="accordion-body py-4 px-5">
+                      {petMedicationsList.map(petMedication => {
+                        return (
+                          <details className="bg-white border open:bg-white open:ring-1 open:ring-black/5 dark:open:ring-white/10 open:shadow-lg p-4 mb-3 rounded-lg">
+                            <summary className="flex justify-between items-center flex-row text-sm leading-6 text-slate-900 dark:text-white font-semibold select-none">
+                              <div className="flex">
+                                <span className="mr-1">
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-6 w-6"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    strokeWidth={2}
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                                    />
+                                  </svg>
+                                </span>
+                                <span>
+                                  Medicamento: {petMedication.medication.name}
+                                </span>
+                              </div>
+                              <span>
+                                <button
+                                  type="button"
+                                  class="inline-block rounded-full bg-black text-white leading-normal uppercase shadow-md hover:bg-gray-700 hover:shadow-lg focus:bg-gray-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-800 active:shadow-lg transition duration-150 ease-in-out w-9 h-9"
+                                  onClick={() =>
+                                    handleDeletePetVaccine(petMedication)
+                                  }
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-6 w-6 inline-flex"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    strokeWidth={2}
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                    />
+                                  </svg>
+                                </button>
+                              </span>
+                            </summary>
+                            <div className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
+                              <p>Descrição: {petMedication.description}</p>
+                              <p>
+                                Data de Aplicação:{' '}
+                                {petMedication.applicationDate}
+                              </p>
+                              <p>Próxima Data: {petMedication.nextDate}</p>
+                            </div>
+                          </details>
+                        )
+                      })}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -251,7 +412,63 @@ function MyPets() {
                   aria-labelledby="headingThree"
                   data-bs-parent="#accordionExample"
                 >
-                  <div class="accordion-body py-4 px-5"></div>
+                  <div class="accordion-body py-4 px-5">
+                    {petSurgeriesList.map(petSurgerie => {
+                      return (
+                        <details className="bg-white border open:bg-white open:ring-1 open:ring-black/5 dark:open:ring-white/10 open:shadow-lg p-4 mb-3 rounded-lg">
+                          <summary className="flex justify-between items-center flex-row text-sm leading-6 text-slate-900 dark:text-white font-semibold select-none">
+                            <div className="flex">
+                              <span className="mr-1">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-6 w-6"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  strokeWidth={2}
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                                  />
+                                </svg>
+                              </span>
+                              <span>Cirurgia: {petSurgerie.name}</span>
+                            </div>
+                            <span>
+                              <button
+                                type="button"
+                                class="inline-block rounded-full bg-black text-white leading-normal uppercase shadow-md hover:bg-gray-700 hover:shadow-lg focus:bg-gray-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-800 active:shadow-lg transition duration-150 ease-in-out w-9 h-9"
+                                onClick={() =>
+                                  handleDeletePetVaccine(petSurgerie)
+                                }
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-6 w-6 inline-flex"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  strokeWidth={2}
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                  />
+                                </svg>
+                              </button>
+                            </span>
+                          </summary>
+                          <div className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
+                            <p>Data da Cirurgia: {petSurgerie.date}</p>
+                            <p>Veterinário: {petSurgerie.vet}</p>
+                          </div>
+                        </details>
+                      )
+                    })}
+                  </div>
                 </div>
               </div>
 
