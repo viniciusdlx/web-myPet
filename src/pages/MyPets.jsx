@@ -106,7 +106,7 @@ function MyPets() {
                       type="button"
                       data-bs-toggle="collapse"
                       data-bs-target="#collapseOne"
-                      aria-expanded="true"
+                      aria-expanded="false"
                       aria-controls="collapseOne"
                       onClick={() => setLoadVac(!loadVac)}
                     >
@@ -115,7 +115,7 @@ function MyPets() {
                   </h2>
                   <div
                     id="collapseOne"
-                    class="accordion-collapse collapse show"
+                    class="accordion-collapse collapse"
                     aria-labelledby="headingOne"
                     data-bs-parent="#accordionExample"
                   >
