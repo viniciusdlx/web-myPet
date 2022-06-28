@@ -234,6 +234,10 @@ function MyPets() {
   //     })
   // }
 
+  useEffect(() => {
+    GetPets();
+  }, [])
+
   const GetPets = () => {
     fetch(`https://my-petweb.herokuapp.com/pets/${tutorId}`, {
       method: 'GET',
@@ -246,11 +250,19 @@ function MyPets() {
       .then(result => setPetsList(result?.content))
   }
 
-  const [disable, setDisable] = useState(false)
+  const [disable, setDisable] = useState(true)
   const enableInputs = () => {
-    setDisable(current => !current)
+    setDisable(!disable)
   }
-  useEffect(() => {}, [disable])
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const nome = document.getElementById("valueNamePet").value;
+
+    console.log('nome', nome);
+  }
+
   return (
     <>
       <header>
@@ -262,7 +274,7 @@ function MyPets() {
             <div className="flex justify-between items-center">
               <h1 className="text-[30px] lg:text-5xl text-mpPurple2 font-bold">
                 Seus pets
-                <GetPets />
+                {/* <GetPets /> */}
                 {/* <button onClick={GetPets}>hehe</button> */}
                 {/* {console.log(JSON.stringify(user, null, 2))} */}
               </h1>
@@ -322,25 +334,25 @@ function MyPets() {
                             <form
                               id="editDataPet"
                               className="grid grid-flow-row gap-y-4"
+                              onSubmit={handleSubmit}
+                              action="post"
                             >
                               <div className="grid grid-cols-2 gap-x-4">
                                 <input
                                   type="text"
                                   id="valueNamePet"
                                   name="valueNamePet"
-                                  placeholder="Nome do Pet"
-                                  value={pet.name}
-                                  className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic  disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
-                                  disabled={disable ? false : true}
+                                  placeholder={pet.name}
+                                  className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
+                                  disabled={disable}
                                 />
                                 <input
                                   type="text"
                                   id="valueBreedPet"
                                   name="valueBreedPet"
-                                  placeholder="Raça do Pet"
-                                  value={pet.breed}
+                                  placeholder={pet.breed}
                                   className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
-                                  disabled={disable ? false : true}
+                                  disabled={disable}
                                 />
                               </div>
                               <div className="grid grid-cols-2 gap-x-4">
@@ -348,7 +360,7 @@ function MyPets() {
                                   name="valueGenderPet"
                                   id="valueGenderPet"
                                   className="form-select appearance-none block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:cursor-not-allowed"
-                                  disabled={disable ? false : true}
+                                  disabled={disable}
                                 >
                                   <option selected defaultValue="test">
                                     {pet.gender == ''
@@ -380,28 +392,25 @@ function MyPets() {
                                   type="date"
                                   id="valueBirthdayPet"
                                   name="valueBirthdayPet"
-                                  value={
+                                  placeholder={
                                     pet.birthday !== '' ? pet.birthday : ''
                                   }
                                   className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
-                                  disabled={disable ? false : true}
+                                  disabled={disable}
                                 />
                               </div>
-                              <div className="flex justify-center items-center w-1/2 mx-auto">
+                              <div className="grid grid-cols-2 gap-x-4 mb-4">
                                 <input
                                   type="text"
                                   id="valueSpeciePet"
                                   name="valueSpeciePet"
-                                  placeholder="Espécie do Pet"
-                                  value={pet.specie}
+                                  placeholder={pet.specie}
                                   className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
-                                  disabled={disable ? false : true}
+                                  disabled={disable}
                                 />
-                              </div>
-                              <div className="flex justify-center items-center w-1/2 mx-auto">
                                 <button
                                   type="submit"
-                                  className="hidden bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd text-xl mbm:text-2xl text-white px-10 py-3 rounded-full font-semibold tracking-wider"
+                                  className={disable ? "hidden " : " " + "ml-auto w-fit bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd text-xl mbm:text-2xl text-white px-10 py-3 rounded-full font-semibold tracking-wider mb-4"}
                                 >
                                   Atualizar Dados do Pet
                                 </button>

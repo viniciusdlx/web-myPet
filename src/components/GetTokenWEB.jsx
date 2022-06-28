@@ -17,7 +17,7 @@ const GetTokenWEB = () => {
       console.log('setado TokenWEB')
 
       let myHeaders = new Headers()
-      myHeaders.append('Authorization', 'Bearer ' + accessToken)
+      myHeaders.append('Authorization', 'Bearer ' + acessToken)
       myHeaders.append('Content-Type', 'application/json')
 
       const optionSgetUserMetadata = {
