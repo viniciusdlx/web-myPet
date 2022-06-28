@@ -279,7 +279,7 @@ function MyPets() {
           })
 
           document.getElementById('vaccineId').value = '',
-          document.getElementById('applicationDat').value = '',
+          document.getElementById('applicationDate').value = '',
           document.getElementById('nextDate').value = '',
           document.getElementById('description').value = ''
         })
