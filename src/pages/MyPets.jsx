@@ -47,6 +47,8 @@ const AddVaccines = () => {
       .then(result => console.log(result))
   }
 
+  const [vaccineList, setVaccineList] = useState([])
+
   fetch(`https://my-petweb.herokuapp.com/vaccines`, {
     method: 'GET',
     headers: {
@@ -55,7 +57,7 @@ const AddVaccines = () => {
     }
   })
     .then(response => response.json())
-    .then(result => console.log(result))
+    .then(result => setVaccineList(result.map(e => e)))
 
   return (
     <div
@@ -63,7 +65,7 @@ const AddVaccines = () => {
       id="modalAddVaccines"
       tabindex="-1"
       aria-labelledby="exampleModalCenterTitle"
-      aria-modal="true"
+      aria-hidden="true"
       role="dialog"
     >
       <div class="modal-dialog modal-dialog-centered relative w-auto pointer-events-none">
@@ -85,14 +87,17 @@ const AddVaccines = () => {
             >
               <div className="form-floating mb-3 w-full xl:w-96">
                 <select
-                  id="gender"
-                  name="gender"
+                  id="vaccineId"
+                  name="vaccineId"
                   className="form-select appearance-none block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black"
                   required
                 >
                   <option selected>Selecione o gênero do pet</option>
-                  <option value="Masculino">Masculino</option>
-                  <option value="Feminino">Feminino</option>
+                  {vaccineList?.length > 0 ? (
+                    vaccineList.map(e => <option value={e.id}>{e.name}</option>)
+                  ) : (
+                    <option value="">Nenhuma vacina encontrada</option>
+                  )}
                 </select>
               </div>
               <div className="form-floating mb-3 w-full xl:w-96">
