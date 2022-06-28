@@ -23,7 +23,7 @@ const CadastroTutor = () => {
     e.preventDefault()
 
     const data = values
-    console.log('data -> ',data)
+    console.log('data -> ', data)
     // console.log(token)
 
     var myHeaders = new Headers()
