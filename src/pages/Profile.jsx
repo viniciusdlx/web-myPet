@@ -76,6 +76,8 @@ export default function Profile() {
                 type="text"
                 id="birthday"
                 name="birthday"
+                onFocus={e => (e.target.type = 'date')}
+                onBlur={e => (e.target.type = 'text')}
                 className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic"
                 placeholder={tutorData.birthday}
               />
