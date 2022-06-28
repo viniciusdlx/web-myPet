@@ -4,15 +4,26 @@ import { withAuthenticationRequired, useAuth0 } from '@auth0/auth0-react'
 import { AddMedications } from '../components/AddMedications'
 import { DeletePet } from '../components/DeletePet'
 import Loading from '../components/Loading'
-import { NavLink } from 'react-router-dom'
-import SetValuesAuth0 from '../components/SetValuesAuth0'
 import Swal from 'sweetalert2'
+import { Navigate } from 'react-router-dom'
 // import { Container } from './styles';
 
 var tutorId = JSON.parse(localStorage.getItem('tutorID'))
 var tokenAPI = localStorage.getItem('tokenAPI')
 var tokenWEB = localStorage.getItem('tokenWEB')
 tutorId = tutorId?.id
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: toast => {
+    toast.addEventListener('mouseenter', Swal.stopTimer)
+    toast.addEventListener('mouseleave', Swal.resumeTimer)
+  }
+})
 
 const initialValue = {
   name: '',
@@ -158,7 +169,7 @@ const FormCadastrarNovoPet = () => {
       ...data,
       tutorId
     }
-    console.log('data', data)
+
     const optionsPutPet = {
       method: 'PUT',
       headers: {
@@ -170,9 +181,18 @@ const FormCadastrarNovoPet = () => {
 
     fetch(`${import.meta.env.VITE_AUTH0_AUDIENCE}pets`, optionsPutPet)
       .then(response => response.json())
-      .then(result => console.log(result))
-
-    // console.log(data)
+      .then(result => {
+        Toast.fire({
+          icon: 'success',
+          title: 'Pet cadastrado com sucesso'
+        })
+      })
+      .catch(err => {
+        Toast.fire({
+          icon: 'error',
+          title: 'Falha ao cadastrar pet'
+        })
+      })
 
     e.target.reset()
   }
@@ -258,6 +278,7 @@ const FormCadastrarNovoPet = () => {
         </div>
         <button
           type="submit"
+          data-bs-dismiss="modal"
           className="bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd text-xl mbm:text-2xl text-white px-10 py-3 rounded-full font-semibold tracking-wider"
         >
           Cadastrar Pet
@@ -343,7 +364,7 @@ function MyPets() {
     GetPets()
   }, [])
 
-  const GetPets = () => {
+  function GetPets () {
     fetch(`https://my-petweb.herokuapp.com/pets/${tutorId}`, {
       method: 'GET',
       headers: {
@@ -357,18 +378,6 @@ function MyPets() {
         console.log('error', error)
       })
   }
-
-  const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: toast => {
-      toast.addEventListener('mouseenter', Swal.stopTimer)
-      toast.addEventListener('mouseleave', Swal.resumeTimer)
-    }
-  })
 
   const [disable, setDisable] = useState(true)
   const enableInputs = () => {
