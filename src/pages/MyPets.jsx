@@ -249,6 +249,9 @@ function MyPets() {
     })
       .then(response => response.json())
       .then(result => setPetsList(result?.content))
+      .catch((error) => {
+        console.log('error', error);
+      })
   }
 
   const Toast = Swal.mixin({
@@ -268,15 +271,15 @@ function MyPets() {
     setDisable(!disable)
   }
 
-  function handleSubmit(e, pet) {
+  async function handleSubmit(e, pet, i) {
     e.preventDefault();
-
+    console.log('document.getElementById("valueNamePet_"+i)', document.getElementById("valueNamePet_"+i));
     const body = {
-      name: document.getElementById("valueNamePet").value || pet.name,
-      breed: document.getElementById("valueBreedPet").value || pet.breed,
-      gender: document.getElementById("valueGenderPet").value || pet.gender,
-      birthday: document.getElementById("valueBirthdayPet").value || pet.birthday,
-      specie: document.getElementById("valueSpeciePet").value || pet.specie,
+      name: document.getElementById("valueNamePet_"+i).value || pet.name,
+      breed: document.getElementById("valueBreedPet_"+i).value || pet.breed,
+      gender: document.getElementById("valueGenderPet_"+i).value || pet.gender,
+      birthday: document.getElementById("valueBirthdayPet_"+i).value || pet.birthday,
+      specie: document.getElementById("valueSpeciePet_"+i).value || pet.specie,
       tutorId
     };
 
@@ -288,10 +291,11 @@ function MyPets() {
       },
       body: JSON.stringify(body)
     }
-
-    fetch(`${import.meta.env.VITE_AUTH0_AUDIENCE}pets/${pet.id}`, optionsPutPet)
+    console.log('body', body, pet.id);
+    await fetch(`${import.meta.env.VITE_AUTH0_AUDIENCE}pets/${pet.id}`, optionsPutPet)
       .then(response => response.json())
       .then(() => {
+        console.log('sucesso')
         Toast.fire({
           icon: 'success',
           title: 'Pet alterado com sucesso'
@@ -303,6 +307,8 @@ function MyPets() {
           title: 'Falha ao alterar pet'
         })
       })
+      console.log('depois do sucesso')
+    GetPets();
   }
 
   return (
@@ -326,7 +332,7 @@ function MyPets() {
             <div>
               <div className="accordion py-10" id="accordionExample">
                 {petsList?.length > 0 ? (
-                  petsList.map(pet => (
+                  petsList.map((pet, i) => (
                     <div className="accordion-item bg-white border border-gray-200">
                       <h2
                         className="accordion-header mb-0"
@@ -376,13 +382,13 @@ function MyPets() {
                             <form
                               id="editDataPet"
                               className="grid grid-flow-row gap-y-4"
-                              onSubmit={(e) => handleSubmit(e, pet)}
+                              onSubmit={(e) => handleSubmit(e, pet, i)}
                               action="post"
                             >
                               <div className="grid grid-cols-2 gap-x-4">
                                 <input
                                   type="text"
-                                  id="valueNamePet"
+                                  id={"valueNamePet_"+i}
                                   name="valueNamePet"
                                   placeholder={pet.name}
                                   className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
@@ -390,7 +396,7 @@ function MyPets() {
                                 />
                                 <input
                                   type="text"
-                                  id="valueBreedPet"
+                                  id={"valueBreedPet_"+i}
                                   name="valueBreedPet"
                                   placeholder={pet.breed}
                                   className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
@@ -400,7 +406,7 @@ function MyPets() {
                               <div className="grid grid-cols-2 gap-x-4">
                                 <select
                                   name="valueGenderPet"
-                                  id="valueGenderPet"
+                                  id={"valueGenderPet_"+i}
                                   className="form-select appearance-none block ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:cursor-not-allowed"
                                   disabled={disable}
                                 >
@@ -432,8 +438,8 @@ function MyPets() {
                                 </select>
                                 <input
                                   type="text"
-                                  id="valueBirthdayPet"
                                   name="valueBirthdayPet"
+                                  id={"valueBirthdayPet_"+i}
                                   onFocus={(e) => e.target.type='date'}
                                   onBlur={(e) => e.target.type='text'}
                                   placeholder={
@@ -446,7 +452,7 @@ function MyPets() {
                               <div className="grid grid-cols-2 gap-x-4 mb-4">
                                 <input
                                   type="text"
-                                  id="valueSpeciePet"
+                                  id={"valueSpeciePet_"+i}
                                   name="valueSpeciePet"
                                   placeholder={pet.specie}
                                   className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black disabled:bg-[#e9ecef] disabled:opacity-[0.7] disabled:cursor-not-allowed"
