@@ -42,11 +42,11 @@ export default function Profile() {
   async function handleSubmitTutor(e) {
     e.preventDefault()
     const body = {
-      name: document.getElementById('nameTutor').value,
-      phone: document.getElementById('phoneTutor').value,
-      email: document.getElementById('emailTutor').value,
-      birthday: document.getElementById('birthdayTutor').value,
-      gender: document.getElementById('genderTutor').value
+      name: document.getElementById('nameTutor').value || tutorData.name,
+      phone: document.getElementById('phoneTutor').value || tutorData.phone,
+      email: document.getElementById('emailTutor').value || tutorData.email,
+      birthday: document.getElementById('birthdayTutor').value || tutorData.birthday,
+      gender: document.getElementById('genderTutor').value || tutorData.gender
     }
 
     const optionsPutPet = {
@@ -105,7 +105,6 @@ export default function Profile() {
                   autoComplete="name"
                   className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black"
                   placeholder={tutorData.name}
-                  required
                 />
               </label>
               <label htmlFor="phoneTutor" className="w-full">
@@ -117,7 +116,6 @@ export default function Profile() {
                   autoComplete="phone"
                   className="ease-in-out duration-300 w-full p-4 rounded-xl bg-mpGrey bg-opacity-10 border-1 border-slate-300 text-sm md:text-base lg:text-lg focus:border-none focus:ring-2 focus:border-mpPurple1 focus:ring-mpPurple1 italic placeholder:italic placeholder:text-black"
                   placeholder={tutorData.phone}
-                  required
                 />
               </label>
               <label htmlFor="emailTutor" className="w-full">
