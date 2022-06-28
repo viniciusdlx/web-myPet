@@ -48,16 +48,21 @@ const AddVaccines = () => {
   }
 
   const [vaccineList, setVaccineList] = useState([])
+  useEffect(() => {
+    getVaccines()
+  }, [])
 
-  fetch(`https://my-petweb.herokuapp.com/vaccines`, {
-    method: 'GET',
-    headers: {
-      Authorization: 'Bearer ' + tokenAPI,
-      'Content-type': 'application/json'
-    }
-  })
-    .then(response => response.json())
-    .then(result => setVaccineList(result.map(e => e)))
+  const getVaccines = () => {
+    fetch(`https://my-petweb.herokuapp.com/vaccines`, {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + tokenAPI,
+        'Content-type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then(result => setVaccineList(result.map(e => e)))
+  }
 
   return (
     <div
