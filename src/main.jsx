@@ -12,7 +12,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     domain={import.meta.env.VITE_AUTH0_DOMAIN}
     clientId={import.meta.env.VITE_AUTH0_CLIENT_ID_WEB}
     redirectUri={window.location.origin}
-    audience={import.meta.env.VITE_AUTH0_AUDIENCE}
+    audience={`https://${import.meta.env.VITE_AUTH0_DOMAIN}/api/v2/`}
     scope="read:current_user update:current_user_metadata update:current_app_metadata"
   >
     <App />

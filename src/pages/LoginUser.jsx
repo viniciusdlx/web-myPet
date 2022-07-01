@@ -12,23 +12,6 @@ function initialState() {
 }
 
 const LoginUser = () => {
-  // var myHeaders = new Headers()
-  // myHeaders.append(
-  //   'Authorization',
-  //   'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkpNQW9YNzM2NFpyYWJCSzB1M2MzeiJ9.eyJpc3MiOiJodHRwczovL215LXBldC51cy5hdXRoMC5jb20vIiwic3ViIjoicUVDVmV5VzZlQ1BsUHlzQUhSRlBITmFvaHpVM0VRSkxAY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vbXktcGV0d2ViLmhlcm9rdWFwcC5jb20vIiwiaWF0IjoxNjU1Njc2MTg3LCJleHAiOjE2NTU3NjI1ODcsImF6cCI6InFFQ1ZleVc2ZUNQbFB5c0FIUkZQSE5hb2h6VTNFUUpMIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIn0.VspJBklaO1blJWQMj5PJLoCptUwPzzUGqw6-hEmn8SerovmYBNvIlsyH2YkjVQDsfeHwVoXvgBoG3hjAKIW_L_iPlLOXXSQjcyPgizTMJwhx4SWXHltgRJY5c1zUvra_y5BTLwia7om8VtuWjqfK7ZFzb8hqbl5BoX62_8PIjPNhw-fXYbf3bUCqClp47bBVW-xbThTMHNNnB6SJwzUb4N08wsTkZUh-813Aaa-ivPM8nuec1AOwhHL1Jyh_AIrol-6w_D3YrTvtBd1HqhKkAD2PZIuISWqvnjG-DY9sDXA5ycSz_TP_87c-fkVPrphCxbe45Int0WNvjv4rfkIzaA'
-  // )
-  // myHeaders.append('Cookie', 'JSESSIONID=CC67CA8407C529DFA706C14F9781F5F0')
-
-  // var requestOptions = {
-  //   method: 'GET',
-  //   headers: myHeaders,
-  //   redirect: 'follow'
-  // }
-
-  // fetch('https://my-petweb.herokuapp.com/tutor', requestOptions)
-  //   .then(response => response.json())
-  //   .then(result => console.log(result))
-  //   .catch(error => console.log('error', error))
   const [values, setValues] = useState(initialState)
 
   function onChange(event) {

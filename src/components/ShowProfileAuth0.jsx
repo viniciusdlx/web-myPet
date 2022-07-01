@@ -7,7 +7,6 @@ const ProfileAuth0 = () => {
   if (isLoading) {
     return <div>Loading ...</div>
   }
-  console.log(user)
   return (
     isAuthenticated && (
       <div>

@@ -17,14 +17,11 @@ const initialValue = {
 
 const CadastroTutor = () => {
   const { user } = useAuth0()
-  // console.log(user)
 
   const submitTutor = e => {
     e.preventDefault()
 
     const data = values
-    console.log('data -> ', data)
-    // console.log(token)
 
     var myHeaders = new Headers()
     myHeaders.append('Authorization', 'Bearer ' + tokenAPI)
@@ -38,10 +35,9 @@ const CadastroTutor = () => {
       body: raw,
       redirect: 'follow'
     }
-    fetch('https://my-petweb.herokuapp.com/tutor', requestOptions)
+    fetch(`${import.meta.env.VITE_AUTH0_AUDIENCE}tutor`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        console.log(result)
         const tutorId = result.id
         const domain = import.meta.env.VITE_AUTH0_DOMAIN
         const data = {
@@ -49,7 +45,8 @@ const CadastroTutor = () => {
             id: tutorId
           }
         }
-        console.log(data)
+        localStorage.removeItem('tutorID')
+        localStorage.setItem('tutorID', JSON.stringify({ id: tutorId }))
         const optionsPatchMetaData = {
           method: 'PATCH',
           headers: {
@@ -63,33 +60,12 @@ const CadastroTutor = () => {
           optionsPatchMetaData
         )
           .then(response => response.json())
-          .then(result => console.log(result))
+          .then(result => {
+            alert('Cadastro Realizado com Sucesso')
+            console.log(result)
+          })
       })
       .catch(error => console.log('error', error))
-
-    // let myHeaders = new Headers()
-    // myHeaders.append('Authorization', `Bearer ${token}`)
-    // myHeaders.append('Content-Type', 'application/json')
-
-    // var raw = JSON.stringify({
-    //   name: 'Test',
-    //   birthday: '2022-06-26',
-    //   gender: 'string',
-    //   phone: 'string',
-    //   email: 'string'
-    // })
-
-    // let requestOptionsPutTutor = {
-    //   method: 'PUT',
-    //   headers: myHeaders,
-    //   body: raw,
-    //   redirect: 'follow'
-    // }
-
-    // fetch('https://my-petweb.herokuapp.com/tutor', requestOptionsPutTutor)
-    //   .then(response => response.text())
-    //   .then(result => console.log(result))
-    //   .catch(error => console.log('error', error))
 
     e.target.reset()
   }
@@ -99,15 +75,6 @@ const CadastroTutor = () => {
     const { name, value } = event.target
     setValues({ ...values, [name]: value })
   }
-
-  // document.getElementById('phone').addEventListener('input', function (e) {
-  //   var x = e.target.value
-  //     .replace(/\D/g, '')
-  //     .match(/(\d{0,3})(\d{0,3})(\d{0,4})/)
-  //   e.target.value = !x[2]
-  //     ? x[1]
-  //     : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '')
-  // })
 
   const bgGradient =
     'bg-gradient-to-r from-mpGradientInit via-mpGradientMiddle to-mpGradientEnd'

@@ -57,17 +57,18 @@ function MyPets() {
     }, [loadAll])
 
     const loadVaccines = () => {
-      console.log('selectedPet', selectedPet)
-      fetch(`https://my-petweb.herokuapp.com/pet-vaccine/${selectedPet?.id}`, {
-        method: 'GET',
-        headers: {
-          Authorization: 'Bearer ' + tokenAPI,
-          'Content-type': 'application/json'
+      fetch(
+        `${import.meta.env.VITE_AUTH0_AUDIENCE}pet-vaccine/${selectedPet?.id}`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: 'Bearer ' + tokenAPI,
+            'Content-type': 'application/json'
+          }
         }
-      })
+      )
         .then(response => response.json())
         .then(result => {
-          console.log('wha >> ', result.content)
           setPetVaccinesList(result.content)
         })
         .catch(err => {
@@ -80,9 +81,10 @@ function MyPets() {
     }
 
     const loadMedications = () => {
-      console.log('selectedPet Medications', selectedPet)
       fetch(
-        `https://my-petweb.herokuapp.com/pet-medication/${selectedPet?.id}`,
+        `${import.meta.env.VITE_AUTH0_AUDIENCE}pet-medication/${
+          selectedPet?.id
+        }`,
         {
           method: 'GET',
           headers: {
@@ -93,7 +95,6 @@ function MyPets() {
       )
         .then(response => response.json())
         .then(result => {
-          console.log('whm >> ', result.content)
           setPetMedicationsList(result.content)
         })
         .catch(err => {
@@ -106,17 +107,18 @@ function MyPets() {
     }
 
     const loadSurgeries = () => {
-      console.log('selectedPet', selectedPet)
-      fetch(`https://my-petweb.herokuapp.com/surgeries/${selectedPet?.id}`, {
-        method: 'GET',
-        headers: {
-          Authorization: 'Bearer ' + tokenAPI,
-          'Content-type': 'application/json'
+      fetch(
+        `${import.meta.env.VITE_AUTH0_AUDIENCE}surgeries/${selectedPet?.id}`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: 'Bearer ' + tokenAPI,
+            'Content-type': 'application/json'
+          }
         }
-      })
+      )
         .then(response => response.json())
         .then(result => {
-          console.log('whs >> ', result.content)
           setPetSurgeriesList(result.content)
         })
         .catch(err => {
@@ -129,13 +131,16 @@ function MyPets() {
     }
 
     const handleDeletePetVaccine = petVaccine => {
-      fetch(`https://my-petweb.herokuapp.com/pet-vaccine/${petVaccine?.id}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: 'Bearer ' + tokenAPI,
-          'Content-type': 'application/json'
+      fetch(
+        `${import.meta.env.VITE_AUTH0_AUDIENCE}pet-vaccine/${petVaccine?.id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: 'Bearer ' + tokenAPI,
+            'Content-type': 'application/json'
+          }
         }
-      })
+      )
         .then(() => {
           Toast.fire({
             icon: 'success',
@@ -153,7 +158,9 @@ function MyPets() {
     }
     const handleDeletePetMedication = petMedication => {
       fetch(
-        `https://my-petweb.herokuapp.com/pet-medication/${petMedication?.id}`,
+        `${import.meta.env.VITE_AUTH0_AUDIENCE}pet-medication/${
+          petMedication?.id
+        }`,
         {
           method: 'DELETE',
           headers: {
@@ -178,13 +185,16 @@ function MyPets() {
         })
     }
     const handleDeletePetSurgerie = petSurgerie => {
-      fetch(`https://my-petweb.herokuapp.com/surgeries/${petSurgerie?.id}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: 'Bearer ' + tokenAPI,
-          'Content-type': 'application/json'
+      fetch(
+        `${import.meta.env.VITE_AUTH0_AUDIENCE}surgeries/${petSurgerie?.id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: 'Bearer ' + tokenAPI,
+            'Content-type': 'application/json'
+          }
         }
-      })
+      )
         .then(() => {
           Toast.fire({
             icon: 'success',
@@ -246,66 +256,71 @@ function MyPets() {
                     data-bs-parent="#accordionExample"
                   >
                     <div className="accordion-body py-4 px-3">
-                      {petVaccinesList.map(petVaccine => {
-                        return (
-                          <details className="bg-white border open:bg-white open:ring-1 open:ring-black/5 dark:open:ring-white/10 open:shadow-lg p-4 mb-3 rounded-lg">
-                            <summary className="flex justify-between items-center flex-row text-sm leading-6 text-slate-900 dark:text-white font-semibold select-none">
-                              <div className="flex">
-                                <span className="mr-1">
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-6 w-6"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                                    />
-                                  </svg>
-                                </span>
+                      {petVaccinesList.length > 0 ? (
+                        petVaccinesList.map(petVaccine => {
+                          return (
+                            <details className="bg-white border open:bg-white open:ring-1 open:ring-black/5 dark:open:ring-white/10 open:shadow-lg p-4 mb-3 rounded-lg">
+                              <summary className="flex justify-between items-center flex-row text-sm leading-6 text-slate-900 dark:text-white font-semibold select-none">
+                                <div className="flex">
+                                  <span className="mr-1">
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="h-6 w-6"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                      strokeWidth={2}
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                                      />
+                                    </svg>
+                                  </span>
+                                  <span>
+                                    Vacina Aplicada: {petVaccine.vaccine.name}
+                                  </span>
+                                </div>
                                 <span>
-                                  Vacina Aplicada: {petVaccine.vaccine.name}
-                                </span>
-                              </div>
-                              <span>
-                                <button
-                                  type="button"
-                                  class="inline-block rounded-full bg-black text-white leading-normal uppercase shadow-md hover:bg-gray-700 hover:shadow-lg focus:bg-gray-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-800 active:shadow-lg transition duration-150 ease-in-out w-9 h-9"
-                                  onClick={() =>
-                                    handleDeletePetVaccine(petVaccine)
-                                  }
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-6 w-6 inline-flex"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
+                                  <button
+                                    type="button"
+                                    class="inline-block rounded-full bg-black text-white leading-normal uppercase shadow-md hover:bg-gray-700 hover:shadow-lg focus:bg-gray-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-800 active:shadow-lg transition duration-150 ease-in-out w-9 h-9"
+                                    onClick={() =>
+                                      handleDeletePetVaccine(petVaccine)
+                                    }
                                   >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                    />
-                                  </svg>
-                                </button>
-                              </span>
-                            </summary>
-                            <div className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
-                              <p>Descrição: {petVaccine.description}</p>
-                              <p>
-                                Data de Aplicação: {petVaccine.applicationDate}
-                              </p>
-                              <p>Próxima Data: {petVaccine.nextDate}</p>
-                            </div>
-                          </details>
-                        )
-                      })}
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="h-6 w-6 inline-flex"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                      strokeWidth={2}
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                      />
+                                    </svg>
+                                  </button>
+                                </span>
+                              </summary>
+                              <div className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
+                                <p>Descrição: {petVaccine.description}</p>
+                                <p>
+                                  Data de Aplicação:{' '}
+                                  {petVaccine.applicationDate}
+                                </p>
+                                <p>Próxima Data: {petVaccine.nextDate}</p>
+                              </div>
+                            </details>
+                          )
+                        })
+                      ) : (
+                        <div className="px-2">Sem vacinas cadastradas</div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -331,67 +346,71 @@ function MyPets() {
                     data-bs-parent="#accordionExample"
                   >
                     <div class="accordion-body py-4 px-5">
-                      {petMedicationsList.map(petMedication => {
-                        return (
-                          <details className="bg-white border open:bg-white open:ring-1 open:ring-black/5 dark:open:ring-white/10 open:shadow-lg p-4 mb-3 rounded-lg">
-                            <summary className="flex justify-between items-center flex-row text-sm leading-6 text-slate-900 dark:text-white font-semibold select-none">
-                              <div className="flex">
-                                <span className="mr-1">
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-6 w-6"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                                    />
-                                  </svg>
-                                </span>
+                      {petMedicationsList.length > 0 ? (
+                        petMedicationsList.map(petMedication => {
+                          return (
+                            <details className="bg-white border open:bg-white open:ring-1 open:ring-black/5 dark:open:ring-white/10 open:shadow-lg p-4 mb-3 rounded-lg">
+                              <summary className="flex justify-between items-center flex-row text-sm leading-6 text-slate-900 dark:text-white font-semibold select-none">
+                                <div className="flex">
+                                  <span className="mr-1">
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="h-6 w-6"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                      strokeWidth={2}
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                                      />
+                                    </svg>
+                                  </span>
+                                  <span>
+                                    Medicamento: {petMedication.medication.name}
+                                  </span>
+                                </div>
                                 <span>
-                                  Medicamento: {petMedication.medication.name}
-                                </span>
-                              </div>
-                              <span>
-                                <button
-                                  type="button"
-                                  class="inline-block rounded-full bg-black text-white leading-normal uppercase shadow-md hover:bg-gray-700 hover:shadow-lg focus:bg-gray-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-800 active:shadow-lg transition duration-150 ease-in-out w-9 h-9"
-                                  onClick={() =>
-                                    handleDeletePetMedication(petMedication)
-                                  }
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-6 w-6 inline-flex"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
+                                  <button
+                                    type="button"
+                                    class="inline-block rounded-full bg-black text-white leading-normal uppercase shadow-md hover:bg-gray-700 hover:shadow-lg focus:bg-gray-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-800 active:shadow-lg transition duration-150 ease-in-out w-9 h-9"
+                                    onClick={() =>
+                                      handleDeletePetMedication(petMedication)
+                                    }
                                   >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                    />
-                                  </svg>
-                                </button>
-                              </span>
-                            </summary>
-                            <div className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
-                              <p>Descrição: {petMedication.description}</p>
-                              <p>
-                                Data de Aplicação:{' '}
-                                {petMedication.applicationDate}
-                              </p>
-                              <p>Próxima Data: {petMedication.nextDate}</p>
-                            </div>
-                          </details>
-                        )
-                      })}
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="h-6 w-6 inline-flex"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                      strokeWidth={2}
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                      />
+                                    </svg>
+                                  </button>
+                                </span>
+                              </summary>
+                              <div className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
+                                <p>Descrição: {petMedication.description}</p>
+                                <p>
+                                  Data de Aplicação:{' '}
+                                  {petMedication.applicationDate}
+                                </p>
+                                <p>Próxima Data: {petMedication.nextDate}</p>
+                              </div>
+                            </details>
+                          )
+                        })
+                      ) : (
+                        <div>Sem medicamentos cadastrados</div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -417,61 +436,65 @@ function MyPets() {
                     data-bs-parent="#accordionExample"
                   >
                     <div class="accordion-body py-4 px-5">
-                      {petSurgeriesList.map(petSurgerie => {
-                        return (
-                          <details className="bg-white border open:bg-white open:ring-1 open:ring-black/5 dark:open:ring-white/10 open:shadow-lg p-4 mb-3 rounded-lg">
-                            <summary className="flex justify-between items-center flex-row text-sm leading-6 text-slate-900 dark:text-white font-semibold select-none">
-                              <div className="flex">
-                                <span className="mr-1">
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-6 w-6"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
+                      {petSurgeriesList.length > 0 ? (
+                        petSurgeriesList.map(petSurgerie => {
+                          return (
+                            <details className="bg-white border open:bg-white open:ring-1 open:ring-black/5 dark:open:ring-white/10 open:shadow-lg p-4 mb-3 rounded-lg">
+                              <summary className="flex justify-between items-center flex-row text-sm leading-6 text-slate-900 dark:text-white font-semibold select-none">
+                                <div className="flex">
+                                  <span className="mr-1">
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="h-6 w-6"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                      strokeWidth={2}
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                                      />
+                                    </svg>
+                                  </span>
+                                  <span>Cirurgia: {petSurgerie.name}</span>
+                                </div>
+                                <span>
+                                  <button
+                                    type="button"
+                                    class="inline-block rounded-full bg-black text-white leading-normal uppercase shadow-md hover:bg-gray-700 hover:shadow-lg focus:bg-gray-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-800 active:shadow-lg transition duration-150 ease-in-out w-9 h-9"
+                                    onClick={() =>
+                                      handleDeletePetSurgerie(petSurgerie)
+                                    }
                                   >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                                    />
-                                  </svg>
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="h-6 w-6 inline-flex"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                      strokeWidth={2}
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                      />
+                                    </svg>
+                                  </button>
                                 </span>
-                                <span>Cirurgia: {petSurgerie.name}</span>
+                              </summary>
+                              <div className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
+                                <p>Data da Cirurgia: {petSurgerie.date}</p>
+                                <p>Veterinário: {petSurgerie.vet}</p>
                               </div>
-                              <span>
-                                <button
-                                  type="button"
-                                  class="inline-block rounded-full bg-black text-white leading-normal uppercase shadow-md hover:bg-gray-700 hover:shadow-lg focus:bg-gray-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-800 active:shadow-lg transition duration-150 ease-in-out w-9 h-9"
-                                  onClick={() =>
-                                    handleDeletePetSurgerie(petSurgerie)
-                                  }
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-6 w-6 inline-flex"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                    />
-                                  </svg>
-                                </button>
-                              </span>
-                            </summary>
-                            <div className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
-                              <p>Data da Cirurgia: {petSurgerie.date}</p>
-                              <p>Veterinário: {petSurgerie.vet}</p>
-                            </div>
-                          </details>
-                        )
-                      })}
+                            </details>
+                          )
+                        })
+                      ) : (
+                        <div className="">Sem cirurgias cadastradas</div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -494,7 +517,7 @@ function MyPets() {
         vet: document.getElementById('vetSurg').value
       }
 
-      fetch(`https://my-petweb.herokuapp.com/surgeries`, {
+      fetch(`${import.meta.env.VITE_AUTH0_AUDIENCE}surgeries`, {
         method: 'PUT',
         headers: {
           Authorization: 'Bearer ' + tokenAPI,
@@ -613,7 +636,7 @@ function MyPets() {
         description: document.getElementById('descriptionMed').value
       }
 
-      fetch(`https://my-petweb.herokuapp.com/pet-medication`, {
+      fetch(`${import.meta.env.VITE_AUTH0_AUDIENCE}pet-medication`, {
         method: 'PUT',
         headers: {
           Authorization: 'Bearer ' + tokenAPI,
@@ -647,7 +670,7 @@ function MyPets() {
     }, [])
 
     const getMedications = () => {
-      fetch(`https://my-petweb.herokuapp.com/medications`, {
+      fetch(`${import.meta.env.VITE_AUTH0_AUDIENCE}medications`, {
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + tokenAPI,
@@ -656,7 +679,6 @@ function MyPets() {
       })
         .then(response => response.json())
         .then(result => {
-          console.log('Medications ->>', result)
           setMedicationList(result?.content)
         })
     }
@@ -774,7 +796,7 @@ function MyPets() {
         description: document.getElementById('description').value
       }
 
-      fetch(`https://my-petweb.herokuapp.com/pet-vaccine`, {
+      fetch(`${import.meta.env.VITE_AUTH0_AUDIENCE}pet-vaccine`, {
         method: 'PUT',
         headers: {
           Authorization: 'Bearer ' + tokenAPI,
@@ -808,7 +830,7 @@ function MyPets() {
     }, [])
 
     const getVaccines = () => {
-      fetch(`https://my-petweb.herokuapp.com/vaccines`, {
+      fetch(`${import.meta.env.VITE_AUTH0_AUDIENCE}vaccines`, {
         method: 'GET',
         headers: {
           Authorization: 'Bearer ' + tokenAPI,
@@ -1125,7 +1147,7 @@ function MyPets() {
   }, [tutorId])
 
   function GetPets() {
-    fetch(`https://my-petweb.herokuapp.com/pets/${tutorId}`, {
+    fetch(`${import.meta.env.VITE_AUTH0_AUDIENCE}pets/${tutorId}`, {
       method: 'GET',
       headers: {
         Authorization: 'Bearer ' + tokenAPI,
@@ -1146,10 +1168,6 @@ function MyPets() {
 
   async function handleSubmit(e, pet, i) {
     e.preventDefault()
-    console.log(
-      'document.getElementById("valueNamePet_"+i)',
-      document.getElementById('valueNamePet_' + i)
-    )
     const body = {
       name: document.getElementById('valueNamePet_' + i).value || pet.name,
       breed: document.getElementById('valueBreedPet_' + i).value || pet.breed,
@@ -1170,14 +1188,12 @@ function MyPets() {
       },
       body: JSON.stringify(body)
     }
-    console.log('body', body, pet.id)
     await fetch(
       `${import.meta.env.VITE_AUTH0_AUDIENCE}pets/${pet.id}`,
       optionsPutPet
     )
       .then(response => response.json())
       .then(() => {
-        console.log('sucesso')
         Toast.fire({
           icon: 'success',
           title: 'Pet alterado com sucesso'
@@ -1189,7 +1205,6 @@ function MyPets() {
           title: 'Falha ao alterar pet'
         })
       })
-    console.log('depois do sucesso')
     GetPets()
   }
 
@@ -1206,7 +1221,7 @@ function MyPets() {
         <div className="container mx-auto text-white">
           <div className="px-4 md:px-0 sm:w-3/4 lg:w-10/12 3xl:w-1/2 mx-auto">
             <div className="flex justify-between items-center ">
-              <h1 className="text-lg mbm:text-2xl lg:text-[30px] lg:text-5xl flex-wrap  text-mpPurple2 font-bold relative">
+              <h1 className="text-lg mbm:text-3xl lg:text-4xl flex-wrap  text-mpPurple2 font-bold relative">
                 Seus pets{' '}
                 <NavLink
                   to="/perfil"

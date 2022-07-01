@@ -26,7 +26,7 @@ export default function Profile() {
   }, [])
 
   const GetProfileTutor = async () => {
-    await fetch(`https://my-petweb.herokuapp.com/tutor/${tutorId}`, {
+    await fetch(`${import.meta.env.VITE_AUTH0_AUDIENCE}tutor/${tutorId}`, {
       method: 'GET',
       headers: {
         Authorization: 'Bearer ' + tokenAPI,
@@ -45,7 +45,8 @@ export default function Profile() {
       name: document.getElementById('nameTutor').value || tutorData.name,
       phone: document.getElementById('phoneTutor').value || tutorData.phone,
       email: document.getElementById('emailTutor').value || tutorData.email,
-      birthday: document.getElementById('birthdayTutor').value || tutorData.birthday,
+      birthday:
+        document.getElementById('birthdayTutor').value || tutorData.birthday,
       gender: document.getElementById('genderTutor').value || tutorData.gender
     }
 
@@ -57,14 +58,12 @@ export default function Profile() {
       },
       body: JSON.stringify(body)
     }
-    console.log('body', body)
     await fetch(
       `${import.meta.env.VITE_AUTH0_AUDIENCE}tutor/${tutorId}`,
       optionsPutPet
     )
       .then(response => response.json())
       .then(() => {
-        console.log('sucesso')
         Toast.fire({
           icon: 'success',
           title: 'Tutor alterado com sucesso'
@@ -76,7 +75,6 @@ export default function Profile() {
           title: 'Falha ao alterar tutor'
         })
       })
-    console.log('depois do sucesso')
     GetProfileTutor()
   }
   return (
