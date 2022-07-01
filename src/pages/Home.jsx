@@ -10,14 +10,37 @@ import GetTokenWEB from '../components/GetTokenWEB'
 // import GetUserMetadata from '../components/GetUserMetadata'
 
 function Home() {
+  GetTokenWEB()
+
   var tutorId = localStorage.getItem('tutorID')
+  tutorId = 'undefined'
+  tutorId = localStorage.getItem('tutorID')
+
   const { user, isAuthenticated } = useAuth0()
 
   useEffect(() => {
     if (isAuthenticated) {
-      VerifyTutorId()
+      setInterval(() => {
+        VerifyTutorId()
+      }, 500)
     }
   }, [isAuthenticated])
+
+  const InsertLoginOrSingUp = () => {
+    return (
+      <div className="text-2xl">
+        <p className="mt-6">
+          <NavLink
+            to="/cadastro"
+            className="ease-in-out duration-200 hover:text-[26px]"
+          >
+            <span className="font-semibold underline">Cadastre-se aqui!</span>
+          </NavLink>
+          <span className="ml-2">para ter seu perfil de tutor</span>
+        </p>
+      </div>
+    )
+  }
 
   const VerifyTutorId = () => {
     return (
@@ -27,25 +50,7 @@ function Home() {
             <div className="mb-2">
               <h1 className="text-2xl md:text-3xl">Bem vindo {user.name}</h1>
             </div>
-            <div className="text-2xl">
-              <p className="">
-                Se você ja tem um perfil de Tutor entre no seu perfil
-              </p>
-              <NavLink to="/perfil">
-                <span className="underline">Clicando Aqui!</span>
-              </NavLink>
-              <p className="mt-6">
-                <span className="mr-2">Se não</span>
-                <NavLink
-                  to="/cadastro"
-                  className="ease-in-out duration-200 hover:text-[26px]"
-                >
-                  <span className="font-semibold underline">
-                    Cadastre-se aqui!
-                  </span>
-                </NavLink>
-              </p>
-            </div>
+            <InsertLoginOrSingUp />
           </div>
         ) : (
           <p className="text-2xl font-bold text-center md:text-left rounded-lg bg-transparent p-6 lg:p-0">

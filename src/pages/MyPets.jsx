@@ -967,6 +967,7 @@ function MyPets() {
             icon: 'success',
             title: 'Pet cadastrado com sucesso'
           })
+          GetPets()
         })
         .catch(err => {
           Toast.fire({

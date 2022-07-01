@@ -30,7 +30,7 @@ const GetTokenWEB = () => {
         .then(response => response.json())
         .then(result => {
           const tutorId = JSON.stringify(result.user_metadata)
-          // localStorage.removeItem('tutorID')
+          localStorage.removeItem('tutorID')
           localStorage.setItem('tutorID', tutorId)
         })
     } catch (e) {

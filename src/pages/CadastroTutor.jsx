@@ -3,6 +3,7 @@ import Background from '../components/Background'
 import Navbar from '../components/Navbar'
 import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react'
 import Loading from '../components/Loading'
+import GetTokenWEB from '../components/GetTokenWEB'
 
 var tokenAPI = localStorage.getItem('tokenAPI')
 var tokenWEB = localStorage.getItem('tokenWEB')
@@ -46,7 +47,7 @@ const CadastroTutor = () => {
           }
         }
         localStorage.removeItem('tutorID')
-        localStorage.setItem('tutorID', JSON.stringify({ id: tutorId }))
+
         const optionsPatchMetaData = {
           method: 'PATCH',
           headers: {
@@ -63,6 +64,11 @@ const CadastroTutor = () => {
           .then(result => {
             alert('Cadastro Realizado com Sucesso')
             console.log(result)
+            localStorage.setItem(
+              'tutorID',
+              JSON.stringify({ id: `${tutorId}` })
+            )
+            GetTokenWEB()
           })
       })
       .catch(error => console.log('error', error))
