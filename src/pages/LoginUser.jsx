@@ -4,7 +4,6 @@ import Navbar from '../components/Navbar'
 // import Profile from '../components/Profile'
 import LoginAuth0 from '../components/LoginAuth0'
 import LogoutAuth0 from '../components/LogoutAuth0'
-import ProfileAuth0 from '../components/ShowProfileAuth0'
 
 // import { Container } from './styles';
 function initialState() {
